@@ -1,6 +1,14 @@
 # Responsibility OS Protocol Repository
 
-This repository contains the open-source specification set for Responsibility OS protocol v1. It includes the canonical specs, steward examples, and a progress log that lets contributors evolve the protocol without bundling any product workspaces or personal data.
+This repository carries the open-source specification set for Responsibility OS protocol v1 plus a long-lived roadmap for responsible autonomy. It currently ships the core specs and steward examples needed to bring a transparent Kernel + Guardrails system online.
+
+## Current Protocol Snapshot
+Responsibility OS v1 codifies Kernel, Guardrails, personas, charges, agents, and append-only memory primitives so teams can stand up an auditable co-pilot. The numbered files in `protocol/specs/v1/` act as a linear playbook: read the overview, lock in invariants, and then extend personas or charges with the steward examples under `protocol/examples/steward/`. `PROTOCOL_BOOTSTRAP_V1.md` documents the original bootstrap contract and `protocol/progress/PROGRESS_LOG.md` tracks every spec adjustment.
+
+## Long-Term Vision
+Responsibility OS is meant to evolve into a portable Context OS that travels with stewards, adapts to new model backends, and scales from solo operators to organizations. The design principles derive from safety engineering (Kernel/Guardrails interlocks), knowledge management (append-only memory and traceable personas), and organizational science (clear charge delegation and stewardship). Engineering priorities focus on deterministic planning interfaces, policy-aware tooling that keeps safety clauses inline, and lineage-preserving storage so auditors can cross disciplines—from compliance to product operations—without losing context.
+
+Future scope areas include trust tooling (cryptographic Guardrails attestations and reproducible planning traces), federated persona registries for multi-organization stewardship, structured UI translation layers that keep enforcement metadata intact, and reference deployments that demonstrate how Context OS patterns integrate with existing DevOps and compliance pipelines.
 
 ## Repository Layout
 - `PROTOCOL_BOOTSTRAP_V1.md` – original bootstrap brief that defines the required structure and rules.
