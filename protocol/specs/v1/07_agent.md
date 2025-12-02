@@ -14,7 +14,7 @@ Agents are operational workers (human or synthetic) that execute Kernel-planned 
 4. Kernel validates output; Guardrails re-check context to ensure no drift from policy.
 
 ## Accountability
-- Every agent run references the supervising persona and active charge IDs.
+- Every agent run references the supervising persona plus either the active mandate run ID or the RequestForAction ID being serviced.
 - Guardrails may pause or revoke agent access if outputs violate policy; Kernel records the pause decision in memory.
 - Agents must emit reflective notes when uncertainty is high, enabling stewards to update Guardrails if needed.
 

@@ -1,4 +1,4 @@
-# charge.steward.welcome_user
+# mandate.steward.welcome_user
 
 ## Title
 Welcome a new collaborator into Responsibility OS without exposing sensitive data.
@@ -8,7 +8,7 @@ Provide a concise orientation packet, highlight Kernel + Guardrails structure, a
 
 ## Success Metrics
 - New collaborator acknowledges the Guardrails summary.
-- A welcome note is appended to memory referencing this charge ID.
+- A welcome note is appended to memory referencing this mandate run ID.
 
 ## Constraints
 - No product-specific examples.
@@ -16,4 +16,4 @@ Provide a concise orientation packet, highlight Kernel + Guardrails structure, a
 - Guardrails clauses: `safety.intro`, `transparency.audit`.
 
 ## Handoff Plan
-If the steward is unavailable, the Kernel routes this charge to any persona with the "orientation" capability and records the transfer.
+If the steward is unavailable, the Kernel routes this mandate to any persona with the "orientation" capability and records the transfer plus any linked RequestForAction references.

@@ -2,8 +2,8 @@
 
 ## Interface Contract
 - Load Guardrails version `v1` before activating any planner loop.
-- Accept charges only when they cite an approved Guardrails clause.
-- Emit decision IDs and rationale for each action into append-only memory.
+- Activate mandates or accept RequestForAction items only when they cite approved Guardrails clauses.
+- Emit decision IDs and rationale for each action into append-only memory and the SQL event log.
 
 ## Steward Controls
 1. **Planning** – Breaks intent into verifiable steps and ensures each one has an attached Guardrails reference.

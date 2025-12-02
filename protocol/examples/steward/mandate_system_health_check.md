@@ -1,4 +1,4 @@
-# charge.steward.system_health_check
+# mandate.steward.system_health_check
 
 ## Title
 Run a Responsibility OS system health check.

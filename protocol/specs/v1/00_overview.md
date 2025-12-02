@@ -5,7 +5,8 @@ The Responsibility OS Protocol v1 defines how autonomous or co-pilot style syste
 ## Goals
 - Provide a reproducible specification for responsible computational systems.
 - Keep memory append-only so historical intent and actions are reviewable.
-- Ensure new personas or charges can be registered without modifying the Kernel or Guardrails source of truth.
+- Ensure new personas, mandates, and RequestForAction flows can be registered without modifying the Kernel or Guardrails source of truth.
+- Clarify the split between the **System-of-Record** (deterministic SQL-backed queues) and the **System-of-Context** (markdown + JSON directories stewarded by AI).
 
 ## Structure
 1. `01_invariants` to `09_ui_translation` form a linear specification. Each file references how the Kernel and Guardrails apply to that layer.

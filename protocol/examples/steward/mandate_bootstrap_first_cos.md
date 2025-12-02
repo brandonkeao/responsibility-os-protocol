@@ -1,4 +1,4 @@
-# charge.steward.bootstrap_first_cos
+# mandate.steward.bootstrap_first_cos
 
 ## Title
 Bootstrap the first Circle of Stewardship (CoS) instance.
@@ -7,7 +7,7 @@ Bootstrap the first Circle of Stewardship (CoS) instance.
 Stand up a minimal Responsibility OS deployment with Kernel, Guardrails, and Steward persona configured for collaborative work.
 
 ## Success Metrics
-- Kernel planner responds to test charge within expected latency.
+- Kernel planner responds to a test mandate within expected latency.
 - Guardrails veto test demonstrates proper enforcement.
 - Append-only memory captures setup steps with cross-referenced IDs.
 
@@ -17,4 +17,4 @@ Stand up a minimal Responsibility OS deployment with Kernel, Guardrails, and Ste
 - Guardrails clauses: `safety.bootstrap`, `scope.foundation_only`.
 
 ## Handoff Plan
-If setup stalls, log current state to memory and assign the charge to another steward persona with infrastructure capabilities.
+If setup stalls, log current state to memory and assign the mandate run to another steward persona with infrastructure capabilities.
