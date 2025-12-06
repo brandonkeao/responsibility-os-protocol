@@ -11,5 +11,7 @@ The Kernel enforces deterministic loops that steward agents must follow, and the
 7. **Task Ownership** – Native Tasks are append-only objects. Only the Task Worker (running under Guardrails oversight) may mutate Task status, and sync bridges (e.g., `google_workspace_mcp`) can mirror state into Google Tasks or Calendar without ever deleting the canonical Task.
 8. **Request Primacy** – All cross-responsibility work begins as an accepted RequestForAction. Kernels refuse to create Tasks that reference another Responsibility unless a `request_id` link is present.
 9. **BOOT\_SUMMARY Control** – BOOT\_SUMMARY files may only be generated via `kernel.boot.regenerate`. Guardrails block execution when on-disk content diverges from the last signed hash.
+10. **Workspace Isolation** – Every RFA carries `workspace_id`, and kernels/guardrails enforce that stewards, origins, and targets belong to the same workspace unless a federated path is explicitly approved.
+11. **Model Declaration** – Responsibilities publish `model.default_model` plus allowed fallbacks; startup halts (or records operator override) if the runtime model is outside the allowed set.
 
 Breaking an invariant requires a protocol version bump recorded in `progress/PROGRESS_LOG.md` so stewards can coordinate upgrades.

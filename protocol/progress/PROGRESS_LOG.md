@@ -12,6 +12,13 @@ Entries are append-only and reverse-chronological.
 - Clarified RequestForAction primacy over cross-responsibility Tasks, added `task_sync.state` enumeration, and documented the golden flow fixture (`protocol/examples/fixtures/mandate_to_task_end_to_end.md`).
 - Published telemetry defaults (`protocol/telemetry/policies.default.yaml`) plus policy references inside `protocol/TELEMETRY_SPEC.md` and the filesystem standard so Responsibilities inherit sane thresholds with override hooks.
 
+## 2025-12-06
+- Elevated Jane (steward) to the workspace context-ingestion authority: updated persona/responsibility specs, introduced steward templates per workspace, and documented ingestion mandates.
+- Extended RequestForAction spec with mandatory `workspace_id`, new `ingest_new_context` / `new_context_available` types, and reiterated the RFA vs Task separation boundary.
+- Added bundle metadata + ingestion flows to `protocol/AI_CONTEXT_BUNDLES.md`, including steward-managed `ingestion_status` transitions.
+- Introduced context telemetry events (`context_ingested`, `context_dispatched`) plus `model_mismatch_on_boot`, with policy defaults and Guardrails enforcement.
+- Added per-Responsibility model declaration + boot-time enforcement hooks, updated startup/runbook docs, and logged requirements in the invariants/specs.
+
 ## 2025-11-27
 - Introduced mandate terminology (superseding legacy charges) across specs and steward examples.
 - Added RequestForAction, RFS v0.1, and AI context bundle specifications plus clarified System-of-Record vs System-of-Context boundaries.

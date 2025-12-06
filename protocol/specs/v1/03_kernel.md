@@ -9,7 +9,8 @@ The Kernel is the deterministic core that interprets Mandates, sequences agents,
 4. **Agent Router** – Matches Tasks and plan steps to agents or stewards. Router consults persona capabilities and Guardrails to confirm permissions.
 5. **Memory Writer** – Commits structured events to append-only memory, exposing monotonic IDs for later audit.
 6. **Request Bridge** – Reads deterministic RequestForAction rows, records accept/defer/reject choices, and mirrors results into the System-of-Context.
-7. **Checkpoint Evaluator** – Queries Guardrails to ensure cumulative behavior remains compliant.
+7. **Context Intake Hooks** – Coordinates workspace-level ingestion with the steward. Kernel routes `ingest_new_context` RFAs to the steward, enforces normalization, and schedules downstream `new_context_available` notifications once Guardrails approve.
+8. **Checkpoint Evaluator** – Queries Guardrails to ensure cumulative behavior remains compliant.
 
 ## Interfaces
 - `kernel.decide(step, guardrail_ref)` returns allowed actions plus rationale.

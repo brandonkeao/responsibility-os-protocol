@@ -24,9 +24,13 @@ Operational checklist for spinning up a fresh Dad Mode instance on the Responsib
 1. Run `kernel.boot.regenerate parenting_cos`.
 2. Upload resulting `BOOT_SUMMARY.latest.json` to the Responsibility filesystem.
 3. Confirm memory entry `boot_summary_regenerated` with diff hash.
-4. **Failure Modes**
+4. Run `kernel.boot.model_check parenting_cos` (or equivalent) to compare `actual_model` vs `model.default_model`:
+   - Record decision (`proceed`, `abort`, `update_default_model`).
+   - Ensure telemetry event `model_mismatch_on_boot` logged (status `ok`, `warning`, or `critical`).
+5. **Failure Modes**
    - Manual edit detected → delete file and rerun regenerate command.
    - Hash mismatch → ensure base files committed and rerun.
+   - Model mismatch unresolved → halt boot and loop in operator + Guardrails.
 
 ## Phase 3 – Task Hydration & Sync
 1. Execute `task_worker hydrate parenting_cos`.

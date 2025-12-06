@@ -47,12 +47,19 @@ CREATE TABLE telemetry_alerts (
 | Cost & Usage     | Token or API spend per responsibility or workspace. | `model_cost_usd`, `token_usage`. | `runtime.cost_budget` |
 | Model Drift      | Detected vs preferred model mismatches. | `model_drift_detected`. | `runtime.model_integrity` |
 | Error Budget     | Number of Guardrail vetoes, failed events, or retries. | `guardrail_veto_rate`, `event_retry_count`. | `safety.runtime_integrity` |
+| Context Ingestion | Steward handling of workspace context bundles. | `context_ingested`, `context_dispatched`. | `context.routing_integrity` |
+| Boot Model Enforcement | Per-responsibility model verification at boot. | `model_mismatch_on_boot`. | `runtime.model_integrity` |
 
 ## Guardrails Integration
 
 - Guardrails clauses define acceptable ranges. When kernels insert telemetry rows they must cite the clause that authorizes or monitors that metric (e.g., `runtime.cost_budget`).
 - Guardrails read `telemetry_metrics` to auto-escalate when `status = 'critical'`, optionally emitting a RequestForAction or mandate run to remediate.
 - Telemetry alerts should append a note into `memory/events.md` referencing `telemetry_alerts.id` so auditors can trace remediation steps.
+
+### Event Payload Requirements
+- `context_ingested`: emitted when Jane accepts a bundle (via `ingest_new_context` or workspace drop). Payload MUST include `bundle_ids`, `rfa_ids`, `responsibility_ids_notified` (if known), `workspace_id`, and timestamp.
+- `context_dispatched`: emitted when Jane sends `new_context_available` RFAs. Same payload requirements as above plus the list of RFAs created.
+- `model_mismatch_on_boot`: emitted during Phase 0/1 of the startup checklist whenever `actual_model` differs from `default_model`. Payload MUST include `responsibility_id`, `default_model`, `actual_model`, `operator_decision` (`proceed`, `abort`, `update_default_model`), and the memory pointer documenting the decision.
 
 ## Kernel & Worker Responsibilities
 

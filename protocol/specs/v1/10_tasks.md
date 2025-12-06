@@ -58,6 +58,7 @@ If `task_sync.state` transitions to `blocked` all dependent Responsibilities mus
 - Only the Task Worker service may mutate status, priority, or due dates. Human operators must still invoke the Task Worker (or Kernel command) instead of editing files directly.
 - Calendar or Gmail cleanup cannot cascade into Task removal.
 - Every Task references a Mandate run ID and, when applicable, a RequestForAction ID; missing references cause the Kernel to halt execution.
+- Tasks are strictly internal to a Responsibility/workspace; collaboration between Responsibilities always begins as an RFA even if Tasks eventually mirror the work.
 
 ## Migration Strategy
 1. **Phase 1 – Gmail + Calendar + Tasks**: Stand up Task Worker + `google_workspace_mcp` connectors and confirm sync loops.

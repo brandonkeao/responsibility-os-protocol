@@ -13,6 +13,7 @@ defaults:
     task_worker: 120
   max_failed_tasks_per_day: 3
   max_failed_task_sync_per_hour: 5
+  max_context_ingest_backlog: 10
   task_sync_state_actions:
     blocked:
       escalation: immediate
@@ -25,6 +26,9 @@ defaults:
   model_cost_alerts_usd:
     warning: 15
     critical: 25
+  model_mismatch_actions:
+    soft_warning: proceed
+    hard_warning: require_operator_decision
   telemetry_retention_days: 90
 
 overrides:

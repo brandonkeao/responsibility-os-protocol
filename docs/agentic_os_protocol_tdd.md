@@ -50,6 +50,11 @@ This document briefs engineers and stewards on the full Responsibility OS (ROS) 
 - SQL schema enforces status machine: created → pending → accepted/deferred/rejected/cancelled/expired → completed.
 - Markdown mirrors provide SoC visibility but are regenerated from SQL.
 - RFAs never transfer authority; they request a Responsibility to run its own mandate(s).
+- Every RFA carries `workspace_id`, keeping queues isolated per workspace and tying steward actions to a single environment.
+- Two context-centric RFA types extend the system:
+  - `ingest_new_context` – issued by CLI/tooling to Jane when proposing new bundles (includes bundle IDs, objectives, optional suggested responsibilities).
+  - `new_context_available` – issued by Jane to downstream responsibilities after validation.
+  The steward alone transitions context ingestion RFAs and must avoid unnecessary fan-out while honoring opt-outs.
 
 ### 3.6 Tasks (`protocol/specs/v1/10_tasks.md`)
 - Canonical schema: `task_id`, `title`, `description`, `mandate_id`, `preferred_responsibilities`, `status`, `priority`, `due_date`, `external_refs`, `task_sync`, `source`, timestamps.
@@ -93,9 +98,14 @@ This document briefs engineers and stewards on the full Responsibility OS (ROS) 
 - Default policy file `protocol/telemetry/policies.default.yaml` supplies sane budgets (cost, queue latency, heartbeat intervals, failed task thresholds). Responsibilities copy/override it (`telemetry/policies.<responsibility>.yaml`) and `telemetry/` artifacts live beside each Responsibility per the filesystem spec.
 
 ### 3.11 Operational Artifacts
-- **Responsibility Startup Checklist** (`protocol/RESPONSIBILITY_STARTUP_CHECKLIST.md`) – operator-facing checklist that merges boot phases, required files, outputs, and failure modes into one document. Kernels log `boot_checklist.completed` after each run.
-- **Dad Mode Boot Runbook** (`runbooks/dad_mode_boot_runbook.md`) – applies the checklist to the public Dad Mode instance, including telemetry validation and the requirement to log both `dad_mode_signoff.md` and `potential_issues.md` under `boot_trial_logs/<timestamp>/`.
+- **Responsibility Startup Checklist** (`protocol/RESPONSIBILITY_STARTUP_CHECKLIST.md`) – operator-facing checklist that merges boot phases, required files, outputs, and failure modes into one document. Kernels log `boot_checklist.completed` after each run and now require `boot_model_check` + telemetry `model_mismatch_on_boot`.
+- **Dad Mode Boot Runbook** (`runbooks/dad_mode_boot_runbook.md`) – applies the checklist to the public Dad Mode instance, including telemetry validation, model verification, context-ingestion tests, and the requirement to log both `dad_mode_signoff.md` and `potential_issues.md` under `boot_trial_logs/<timestamp>/`.
 - **Golden Flow Fixture** (`protocol/examples/fixtures/mandate_to_task_end_to_end.md`) – executable narrative showing Mandate → RFA → Task → completion with telemetry + memory references. Use it before onboarding real data.
+
+### 3.12 Context Ingestion & Telemetry
+- `protocol/AI_CONTEXT_BUNDLES.md` now defines bundle metadata (`origin`, `primary/suggested responsibilities`, `scope`, `ingestion_status`) plus the two ingestion flows (workspace drop vs CLI-assisted).
+- Stewards log `context_ingested` when they register a bundle and `context_dispatched` when they emit `new_context_available` RFAs. Payloads include bundle IDs, RFA IDs, notified responsibilities, and workspace IDs.
+- Telemetry policies (`protocol/telemetry/policies.default.yaml`) add defaults for context backlog and model mismatch handling; Guardrails monitor these metrics and escalate via RFAs/alerts when thresholds break.
 
 ---
 

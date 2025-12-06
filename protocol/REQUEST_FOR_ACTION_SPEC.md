@@ -18,6 +18,7 @@ CREATE TABLE requests (
   summary                  TEXT NOT NULL,
   body_md_path             TEXT NULL,
   payload_json             TEXT NULL,
+  workspace_id             TEXT NOT NULL,
   status                   TEXT NOT NULL,
   priority                 INTEGER NOT NULL DEFAULT 100,
   sla_response_seconds     INTEGER NULL,        -- target time to accept/decline
@@ -118,6 +119,7 @@ created_at: 2025-11-28T09:15:00Z
 available_at: 2025-11-28T09:15:00Z
 due_at: 2025-11-30T23:59:59Z
 source_context: mandate_run:finance_cos.monthly_budget_review@2025-11-28T09:00Z
+workspace_id: dad_mode
 ---
 ```
 
@@ -140,3 +142,43 @@ An accepted RequestForAction does **not** transfer authority. It simply asks the
 4. Expire/cancel based on deterministic policies.
 
 This separation keeps governance clear: mandates remain internal authority, RFAs manage cross-responsibility collaboration, and both layers stay auditable.
+
+## Workspace Scope & New RFA Types
+- Every RFA row now records `workspace_id`. Kernels and Guardrails must enforce isolation: RFAs may only reference Responsibilities registered to the same workspace, and markdown mirrors must display the workspace identifier.
+- Steward responsibilities (Jane@workspace) act as the ingestion and routing authority for workspace context. To support this, two new types augment the `type` field:
+
+### `ingest_new_context`
+Used when CLI tools or automations propose a new AI Context Bundle for steward validation.
+
+**Required Fields**
+- `type: ingest_new_context`
+- `origin_responsibility_id`: producer (CLI, automation)
+- `target_responsibility_id`: steward (e.g., `jane@dadmode`)
+- `workspace_id`
+- `payload_json.bundle_ids`: array of bundle identifiers
+- `payload_json.objectives`: list or text describing why the bundle matters
+
+**Optional Fields**
+- `payload_json.user_hints.suggested_responsibilities`
+- `payload_json.tags`
+
+Upon acceptance, the steward must normalize the artifact, update lineage, and dispatch downstream RFAs.
+
+### `new_context_available`
+Used by the steward to notify Responsibilities that vetted context bundles exist.
+
+**Required Fields**
+- `type: new_context_available`
+- `origin_responsibility_id`: steward
+- `target_responsibility_id`: impacted responsibility
+- `workspace_id`
+- `payload_json.bundle_ids`
+- `payload_json.objectives`
+
+Receiving Responsibilities should:
+1. Review the bundle(s) and update their memory/context files.
+2. Respond with relevance (`ack_context_relevant`, `not_relevant`) or issue follow-up RFAs/Tasks as needed.
+
+Guardrails verify that only steward personas can originate `new_context_available` RFAs and that every `ingest_new_context` request transitions through steward review before downstream dispatch.
+
+> **RFA vs Task Separation:** RFAs always mediate cross-responsibility coordination at the workspace boundary. Once a Responsibility accepts the ask, it materializes its own Tasks internally; Tasks must never be used as substitutes for RFAs when collaboration or ingestion responsibilities span multiple Responsibilities.

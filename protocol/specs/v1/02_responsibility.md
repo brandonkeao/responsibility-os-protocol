@@ -18,6 +18,26 @@ Responsibilities boot through four deterministic phases documented in `protocol/
 
 The BOOT\_SUMMARY schema carries `always_rules`, `tool_usage_rules`, `known_tools`, `open_state_threads`, and `context_gaps`. Guardrails treat BOOT\_SUMMARY as authoritative until a reboot occurs (triggered by policy, tool, or scope changes) and log every regeneration delta to memory.
 
+### Model Declaration & Boot Enforcement
+Responsibilities must declare their runtime model policy:
+
+```yaml
+model:
+  default_model: gpt-5.1
+  allowed_models:
+    - gpt-5.1
+    - gpt-4.1-mini
+  notes: Primary tested model.
+```
+
+- During Phase 0/1 of the startup checklist the Kernel compares `actual_model` (reported by orchestration) to `default_model`.
+- If they match → boot continues.
+- If `actual_model` is in `allowed_models` → Guardrails emit a soft warning and log telemetry (`model_mismatch_on_boot` with `status=warning`).
+- If `actual_model` is outside the list → Guardrails emit a hard warning, require operator decision (`proceed`, `abort`, or `update_default_model`), and log telemetry with `status=critical`.
+- Choosing `update_default_model` demands a PROGRESS\_LOG entry plus append-only memory pointer referencing the policy change.
+
+Every decision is recorded in memory (`boot_model_check`) and telemetry (`model_mismatch_on_boot`) so auditors can trace deviations.
+
 ## Transfer of Responsibility
 Responsibility can be delegated only when:
 - The receiving agent acknowledges the Mandate run or accepted RequestForAction reference and corresponding Guardrails clause.

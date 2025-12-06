@@ -58,6 +58,11 @@ Mandate runs cite the Task IDs they spawned so auditors can trace Mandate → Ta
 
 All cross-responsibility work **must** originate as a RequestForAction. Tasks that represent external intent must cite `request_id` in their `source` field, and the Kernel refuses to create cross-responsibility Tasks without an accepted RFA reference. A Responsibility should only accept an RFA if it already has a mandate that covers the requested work or if it drafts a new mandate through the proposal process.
 
+Context ingestion uses specialized RFAs:
+- Tooling submits `ingest_new_context` to the workspace steward (Jane) whenever a bundle is created outside the steward’s direct control.
+- The steward distributes validated bundles via `new_context_available` to impacted Responsibilities.
+Mandates governing ingestion must reference these types explicitly so Guardrails can enforce routing hygiene.
+
 ## Dependencies & Orchestration
 
 Mandates may declare dependencies on other mandate runs or accepted RFAs. Kernels must evaluate these prerequisites before activation:

@@ -16,3 +16,8 @@ Personas describe how stewards or agents express behavior while staying inside K
 - **Retirement** – Persona marked inactive via append-only record. Kernel stops routing tasks, Guardrails enforce cooldown period.
 
 Personas never include personal data; they are abstract stewardship roles that can be shared across organizations.
+
+### Steward Templates
+- The canonical steward persona (**Jane**) is treated as a template. Each workspace must instantiate exactly one primary steward derived from Jane and scoped with a workspace-specific designation (`Jane@DadMode`, `Jane@WorkOS`, etc.).
+- Template-derived personas inherit the ingestion and context-routing mandate: they normalize artifacts, ensure every item produces an AI Context Bundle, and route bundles via the `ingest_new_context` / `new_context_available` RequestForAction types.
+- Higher-order multi-workspace Jane coordination is optional and out of scope for v1; each workspace operates its steward independently while following the shared template.

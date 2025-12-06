@@ -20,3 +20,8 @@ Guardrails must be versioned with semantic identifiers. Kernel loads only compat
 - **Ownership** – BOOT\_SUMMARY artifacts are steward-owned but Guardrails enforce that only `kernel.boot.regenerate` may create or update them. Any manual modification attempt (file hash mismatch without a corresponding regeneration entry) triggers `boot_summary_violation` and halts mandate activation.
 - **Drift Control** – Each regeneration logs `(previous_hash, new_hash, responsibility_id)` to memory. Guardrails compare the latest hash against the on-disk file during every Phase 0 check; mismatches block boot.
 - **Auditability** – Guardrails retain a ledger of regeneration events so auditors can prove which policies and tools were in effect at any point in time.
+
+## Context Ingestion Oversight
+- Guardrails ensure only the designated steward for a workspace can change bundle `ingestion_status`, originate `new_context_available` RFAs, or accept `ingest_new_context` requests.
+- Every transition logs telemetry (`context_ingested`, `context_dispatched`) and a memory pointer; Guardrails compare bundle metadata (origin, scope, responsibilities) to the RFAs generated to prevent over-dispatch.
+- Opt-out acknowledgments from Responsibilities must be honored; Guardrails block repeated notifications when a Responsibility marked the context as irrelevant unless new scope is provided.

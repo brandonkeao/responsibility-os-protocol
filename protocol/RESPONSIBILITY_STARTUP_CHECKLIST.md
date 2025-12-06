@@ -12,6 +12,7 @@ This checklist collapses the Responsibility boot + Task hydration requirements i
 5. `memory/events.md` – append-only log initialized for the Responsibility (`protocol/specs/v1/08_memory.md`).
 6. `queue/inbox/*.md` (if accepting RFAs) – regenerated views referencing the SQL queue (`protocol/REQUEST_FOR_ACTION_SPEC.md`).
 7. `BOOT_SUMMARY.latest.json` – generated via `kernel.boot.regenerate` (see below).
+8. `ai_context/model_preferences.md` or equivalent YAML snippet describing `model.default_model` and `allowed_models`.
 
 ## Required Phases
 | Phase | Description | Pass Criteria |
@@ -25,7 +26,8 @@ This checklist collapses the Responsibility boot + Task hydration requirements i
 1. **BOOT_SUMMARY.latest.json** – authoritative runtime snapshot (no manual edits).
 2. **Task Hydration Report** – appended to memory as `task_hydration_check` with counts (`open`, `blocked`, `degraded`).
 3. **Telemetry Heartbeat** – `telemetry/heartbeats/<responsibility>.json` entry or emitted metric meeting `heartbeat_interval_seconds`.
-4. **Queue Sync Receipt** (if RFAs active) – memory entry referencing SQL queue pointer.
+4. **Model Verification Entry** – memory event `boot_model_check` plus telemetry `model_mismatch_on_boot` (even when matching, emit status=`ok`).
+5. **Queue Sync Receipt** (if RFAs active) – memory entry referencing SQL queue pointer.
 
 ## Failure Conditions
 - Missing required file → Kernel blocks boot and logs `boot_failure.missing_file`.
@@ -33,6 +35,7 @@ This checklist collapses the Responsibility boot + Task hydration requirements i
 - BOOT_SUMMARY stale (>24h) or not generated via `kernel.boot.regenerate` → Kernel refuses Task execution.
 - Task Worker reports `task_sync.state=blocked` (no OAuth or revoked scopes) → Responsibility cannot start until resolved.
 - Telemetry heartbeat absent for 2 intervals (`heartbeat_interval_seconds * 2`) → automated alert.
+- Model mismatch without operator decision → Kernel halts boot until resolved.
 
 ## Regeneration Rules
 - `BOOT_SUMMARY` belongs to the steward persona. Only `kernel.boot.regenerate` may update it; manual edits are prohibited.

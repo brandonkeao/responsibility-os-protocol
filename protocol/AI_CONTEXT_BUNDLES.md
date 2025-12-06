@@ -13,6 +13,27 @@ AI Context Bundles are curated summaries that keep LLM calls efficient while pre
 
 Each file observes the RFS frontmatter contract so provenance is explicit.
 
+## Bundle Metadata
+Every bundle (regardless of Responsibility) must expose structured metadata alongside the content files so stewards can automate routing:
+
+```yaml
+origin: workspace_ingestion | user_cli | system_derived
+primary_responsibilities:
+  - parenting_cos
+suggested_responsibilities:
+  - finance_cos
+scope: household_budgeting
+bundle_ids:
+  - bundle_2025-12-06-allowance-plan
+ingestion_status: pending | registered | dispatched | retired
+```
+
+- `origin` identifies who initiated the bundle.
+- `primary_responsibilities` are the steward’s authoritative routing targets.
+- `suggested_responsibilities` capture hints supplied by users/CLI.
+- `scope` summarizes the thematic boundary.
+- `ingestion_status` tracks Jane’s workflow. She alone transitions the state in order: `pending` → `registered` → `dispatched` → `retired`.
+
 ## Context Worker Responsibility
 
 A dedicated Responsibility (e.g., `context_curator`) owns mandates such as:
@@ -47,9 +68,24 @@ guardrail_clause: runtime.model_integrity
 
 Context workers must update `last_checked_at` during every refresh, set `last_detected_model` based on telemetry, and follow `action_required` when a mismatch occurs (e.g., trigger an auto-switch or notify a steward). When drift is detected they also append a note to `ai_context/recent_activity.md` referencing the same timestamp so auditors can correlate actions.
 
+## Context Ingestion Flows
+
+### Flow 1 – Workspace Drop (Steward-Driven)
+1. A user drops a file or data asset into the shared workspace location.
+2. Jane (workspace steward) is notified via deterministic watcher.
+3. Jane creates lineage entries, assembles an AI Context Bundle with metadata above, and sets `ingestion_status=pending`.
+4. After review, Jane registers the bundle, dispatches `new_context_available` RFAs to relevant Responsibilities, and updates `ingestion_status=dispatched`.
+
+### Flow 2 – CLI / Tool-Assisted Ingestion
+1. CLI or automation prepares a bundle (including metadata, scope, suggested Responsibilities).
+2. CLI **must** issue an `ingest_new_context` RFA to Jane with bundle IDs/objectives.
+3. Jane validates the payload, registers the bundle, and issues downstream `new_context_available` RFAs.
+
+Both flows record telemetry events (`context_ingested`, `context_dispatched`) and append memory entries referencing bundle IDs and RFAs so auditors can reconstruct routing decisions.
+
 ## Usage Rules
 
-- **Primary Context Pack** – All AI calls that act on a Responsibility should default to loading the four core files plus any files referenced within them. Deep dives can fetch additional reports or mandate runs by following those links.
+- **Primary Context Pack** – All AI calls that act on a Responsibility should default to loading the four core files plus any files referenced within them. Deep dives can fetch additional reports or mandate runs by following those links. 
 - **Model Drift Alerts** – If the detected runtime model differs from the preferred model, the bundle must note the mismatch in `model_preferences.md` and in `recent_activity.md`, indicating whether the system switched automatically or notified the user.
 - **No SQL Writes** – Context bundles never mutate the queue or registry. They are semantic reflections of deterministic state.
 - **Evaluation Hooks** – Guardrails may require the context worker to log hashes of each bundle refresh inside `memory/events.md` for future audits.
