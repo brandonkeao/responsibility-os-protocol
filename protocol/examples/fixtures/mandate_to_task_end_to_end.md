@@ -33,6 +33,7 @@ target_responsibility_id: parenting_cos
 status: pending
 priority: 100
 source_context: mandate_run:finance_cos.monthly_allowance@2025-11-28T09:00Z
+workspace_id: dad_mode
 sla_response_seconds: 14400
 sla_completion_seconds: 86400
 ---
