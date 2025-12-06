@@ -24,6 +24,10 @@ Future scope areas include trust tooling (cryptographic Guardrails attestations 
 - Runbooks live under `runbooks/`. Start with `runbooks/README.md` for the standard “create workspace → request boot → log signoff + onboarding guide” flow, then follow the specific runbook you need (e.g., `runbooks/dad_mode_boot_runbook.md`).
 - `boot_trial_logs/` stores timestamped folders for each simulated or live boot (`dad_mode_signoff.md` + `potential_issues.md`) so the operational state stays auditable.
 
+## Workspace Layout
+- Keep this protocol repo clean; run live workspaces as sibling folders. Recommended pattern: `~/repos/workspace-os-<name>/responsibility-os-protocol` plus `~/repos/workspace-os-<name>/<instance_id>` (e.g., `protocol_marketing_os`, `community_ops_os`).
+- Instance folders hold responsibilities, tasks, telemetry, and boot logs. Copy `protocol/telemetry/TELEMETRY_POLICY_TEMPLATE.yaml` into each instance as `telemetry/policies.yaml`, record heartbeats under `telemetry/heartbeats/`, and store boot sequences under `boot_trial_logs/<timestamp>/boot_sequence.md` (gitignored in the instance).
+
 ## Getting Started
 1. Clone the repository:
    ```bash

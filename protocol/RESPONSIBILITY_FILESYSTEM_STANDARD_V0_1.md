@@ -73,7 +73,7 @@ RFS defines how each Responsibility organizes markdown, JSON, and log artifacts 
 
 Responsibilities may add folders, but they must not remove or repurpose the namespaces above.
 
-`telemetry/` is new in this revision and stores the effective policy (`policies.<responsibility>.yaml`, typically derived from `protocol/telemetry/policies.default.yaml`) plus heartbeat snapshots emitted during the startup checklist. Keeping these files co-located with the Responsibility ensures Guardrails can prove which thresholds were enforced at any point in time.
+`telemetry/` is new in this revision and stores the effective policy (`policies.<responsibility>.yaml` or `policies.yaml`, typically derived from `protocol/telemetry/policies.default.yaml`) plus heartbeat snapshots emitted during the startup checklist under `telemetry/heartbeats/`. Keeping these files co-located with the Responsibility ensures Guardrails can prove which thresholds were enforced at any point in time and gives operators a deterministic place to stash boot heartbeats.
 
 ## Frontmatter Contract
 
@@ -162,6 +162,16 @@ Guardrails can now reason about which responsibilities must be notified, and det
 - When a new Responsibility joins the workspace, stewards can either review the summaries to identify relevant sessions or run a targeted, potentially expensive, RAG pass across transcripts to discover additional matches.
 
 AI assistants should ingest reports first, then memory, before editing mandates or writing new plans.
+
+## User Input Logging
+
+Log user/operator inputs as timestamped bullets in `memory/events.md`, keeping the file append-only. Include source and references so auditors can trace follow-on actions:
+
+```
+- 2025-12-06T17:25:00Z user_input (source: human:brandon, mandate: stewardship.ops_intake, task: task-123, rfa: rfa-456) – Requested weekly digest on risk items; create RFA if blocked.
+```
+
+Automation should offer a consistent intake helper or template so every Responsibility records inputs in the same shape.
 
 ## UI Definitions
 
