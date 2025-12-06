@@ -18,10 +18,11 @@ Future scope areas include trust tooling (cryptographic Guardrails attestations 
 - `protocol/examples/fixtures/mandate_to_task_end_to_end.md` – golden flow showing Mandate → RFA → Task → telemetry/memory updates.
 - `protocol/progress/PROGRESS_LOG.md` – append-only changelog documenting version bumps or adjustments.
 - `protocol/README.md` – quick start guide for anyone authoring protocol materials.
-- Cross-cutting specs live beside the steward examples (`RESPONSIBILITY_FILESYSTEM_STANDARD_V0_1.md`, `RESPONSIBILITY_BOOT_TEMPLATE.md`, `RESPONSIBILITY_STARTUP_CHECKLIST.md`, `TASK_WORKER_BOOT_SPEC.md`, `AI_CONTEXT_BUNDLES.md`, `REQUEST_FOR_ACTION_SPEC.md`, `RESPONSIBILITY_REGISTRY_SPEC.md`, `INTENT_ROUTER_SPEC.md`, `EVENT_TRIGGER_SPEC.md`, `DATA_LINEAGE_SPEC.md`, `TELEMETRY_SPEC.md`) and define shared infrastructure contracts.
+- Cross-cutting specs live beside the steward examples (`RESPONSIBILITY_FILESYSTEM_STANDARD_V0_1.md`, `RESPONSIBILITY_BOOT_TEMPLATE.md`, `RESPONSIBILITY_STARTUP_CHECKLIST.md`, `TASK_WORKER_BOOT_SPEC.md`, `AI_CONTEXT_BUNDLES.md`, `REQUEST_FOR_ACTION_SPEC.md`, `RESPONSIBILITY_REGISTRY_SPEC.md`, `INTENT_ROUTER_SPEC.md`, `EVENT_TRIGGER_SPEC.md`, `DATA_LINEAGE_SPEC.md`, `TELEMETRY_SPEC.md`, `telemetry/policies.default.yaml`) and define shared infrastructure contracts.
 - `docs/agentic_os_tasks_protocol_update.md` documents the Task worker + Google Workspace sync rollout plan.
 - `docs/agentic_os_protocol_tdd.md` provides a narrative walkthrough of the entire Responsibility OS protocol for new contributors.
 - `runbooks/dad_mode_boot_runbook.md` is the operator-facing checklist for bringing Dad Mode online using the new startup checklist.
+- `boot_trial_logs/` stores timestamped folders for each simulated or live boot (`dad_mode_signoff.md` + `potential_issues.md`) so the operational state stays auditable.
 
 ## Getting Started
 1. Clone the repository:
