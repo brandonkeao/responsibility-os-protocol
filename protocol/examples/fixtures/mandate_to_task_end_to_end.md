@@ -41,7 +41,7 @@ Summary: Please review the November allowance plan and approve transfers before 
 SQL SoR entry mirrors these fields; Guardrails sign the transition `created → pending`.
 
 ## 3. Kernel Routes RFA
-Parenting Kernel calls `kernel.requests.claim('parenting_cos', batch_size=5)` → receives the RFA reference. Guardrails verify mandate coverage (Parenting has `parenting_cos.allowance_execution`).
+Parenting Kernel calls `kernel.requests.claim('dad_mode', 'parenting_cos', batch_size=5)` → receives the RFA reference. The `workspace_id` parameter ('dad_mode') enforces workspace isolation. Guardrails verify mandate coverage (Parenting has `parenting_cos.allowance_execution`).
 
 ## 4. Task Projection
 Parenting mandate run triggers Task creation:

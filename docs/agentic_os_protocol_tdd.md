@@ -149,7 +149,7 @@ Memory + Telemetry append events
 | `task_worker.sync.google_tasks(task_id)` | Task Worker → Google Workspace MCP | Creates/updates external tasks, logs IDs in `external_refs`. |
 | `task_worker.route(task)` | Task Worker → Kernel Router | Returns candidate responsibilities + rationale. |
 | `memory.append(record)` | Kernel → Memory | Includes `task_id` when Task-related. |
-| `kernel.requests.claim()` | Kernel → SoR | Deterministic selection of pending RFAs. |
+| `kernel.requests.claim(workspace_id, responsibility_id, batch_size)` | Kernel → SoR | Deterministic selection of pending RFAs filtered by workspace (enforces Invariant 10). |
 
 All interfaces emit telemetry events (`telemetry.emit(metric, value, tags)`).
 

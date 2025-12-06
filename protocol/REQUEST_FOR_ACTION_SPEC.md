@@ -91,11 +91,14 @@ Deterministic services claim work with the following canonical query:
 SELECT *
 FROM requests
 WHERE target_responsibility_id = :target
+  AND workspace_id = :workspace_id
   AND status = 'pending'
   AND available_at <= :now
 ORDER BY priority ASC, created_at ASC
 LIMIT :batch_size;
 ```
+
+**Workspace Isolation Enforcement:** The query MUST include `workspace_id` to enforce Invariant 10 (Workspace Isolation). This prevents cross-workspace RFA leakage when Responsibilities share identical IDs across different workspaces. Kernels must pass the current workspace context when invoking this query.
 
 AI may read the markdown mirror of the results but must never alter status fields. Any acceptance, deferral, or rejection must be executed by a kernel-owned command that writes to SQL and appends a memory event.
 
