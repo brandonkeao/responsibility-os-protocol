@@ -17,5 +17,6 @@ The Kernel is the deterministic core that interprets Mandates, sequences agents,
 - `kernel.recover(pointer)` replays history without mutation, honoring Guardrails redaction policies.
 - `kernel.requests.claim(responsibility_id, batch_size)` deterministically selects pending RequestForAction rows for the target and returns references that can be mirrored into markdown views. AI may narrate these requests but never bypass this API.
 - `kernel.tasks.issue(command)` is the sole interface to the Task Worker. Commands capture Task creation, status transitions, and sync intents (`google_workspace_mcp`, calendar bindings). Guardrails validate each command before execution and log a corresponding memory pointer.
+- `kernel.boot.regenerate(responsibility_id)` produces a fresh BOOT\_SUMMARY from canonical files, records a hash delta in memory, and updates Guardrails state so manual edits are never required.
 
 The Kernel never executes arbitrary code—everything flows through declarative plans tied to Guardrails clauses.

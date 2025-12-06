@@ -65,9 +65,15 @@ RFS defines how each Responsibility organizes markdown, JSON, and log artifacts 
 
   scratch/
     *.md
+
+  telemetry/
+    policies.<responsibility>.yaml
+    heartbeats/
 ```
 
 Responsibilities may add folders, but they must not remove or repurpose the namespaces above.
+
+`telemetry/` is new in this revision and stores the effective policy (`policies.<responsibility>.yaml`, typically derived from `protocol/telemetry/policies.default.yaml`) plus heartbeat snapshots emitted during the startup checklist. Keeping these files co-located with the Responsibility ensures Guardrails can prove which thresholds were enforced at any point in time.
 
 ## Frontmatter Contract
 

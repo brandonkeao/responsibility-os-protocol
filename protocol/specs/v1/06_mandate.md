@@ -56,7 +56,7 @@ Mandate runs cite the Task IDs they spawned so auditors can trace Mandate → Ta
 - Mandates = internal authority (System-of-Context) with deterministic activation via Kernel APIs.
 - RequestForAction = external ask (System-of-Record) that may trigger mandate runs but never bypasses Guardrails.
 
-A Responsibility should only accept an RFA if it already has a mandate that covers the requested work or if it drafts a new mandate through the proposal process.
+All cross-responsibility work **must** originate as a RequestForAction. Tasks that represent external intent must cite `request_id` in their `source` field, and the Kernel refuses to create cross-responsibility Tasks without an accepted RFA reference. A Responsibility should only accept an RFA if it already has a mandate that covers the requested work or if it drafts a new mandate through the proposal process.
 
 ## Dependencies & Orchestration
 

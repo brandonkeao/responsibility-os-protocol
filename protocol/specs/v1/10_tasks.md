@@ -23,6 +23,11 @@ Tasks are now first-class, append-only records that sit between Mandates and Res
     "google_task_id": "string | null",
     "calendar_event_id": "string | null"
   },
+  "task_sync": {
+    "state": "active | blocked | degraded",
+    "last_heartbeat": "iso8601",
+    "last_error": "string | null"
+  },
   "source": "gmail | voice | manual | automation",
   "created_at": "iso8601",
   "updated_at": "iso8601"
@@ -33,6 +38,11 @@ Additional implementation notes:
 - `preferred_responsibilities` guides routing when multiple Responsibilities share a mandate scope. Guardrails validate that every selected Responsibility can legally execute the Task.
 - Status transitions follow `needs_action → in_progress → completed` with optional branches to `blocked`; only the Task Worker (operating under Kernel commands) can move between states.
 - `priority` maps to deterministic queue weights (`low=300`, `normal=200`, `high=100` is the recommended encoding).
+- `task_sync.state` communicates connector health:
+  - `active` – credentials valid, last sync succeeded within `heartbeat_interval_seconds`.
+  - `blocked` – OAuth missing or revoked; Responsibility must remediate before boot completes.
+  - `degraded` – connector reachable but API errors persist; Guardrails may permit execution with warnings.
+  Task Worker updates `last_heartbeat` and `last_error` automatically; manual edits are forbidden.
 
 ## Sync Model
 1. **Internal Task Store** – Markdown or structured JSON files inside the Responsibility filesystem serve as the source of truth.
@@ -40,6 +50,8 @@ Additional implementation notes:
 3. **Calendar Binding** – Optional `calendar_event_id` links blockers or deadlines to Google Calendar. Calendar deletions never delete Tasks; they simply clear the binding and log a memory event.
 
 Sync bridges are one-way initiators: they may create or update external artifacts but must never delete or overwrite Tasks stored in the filesystem. Kernel logs every sync command, and Guardrails confirm that the Task Worker executed it successfully.
+
+If `task_sync.state` transitions to `blocked` all dependent Responsibilities must halt Task execution (`kernel.tasks.issue` rejects commands) until OAuth credentials are restored. `degraded` state adds telemetry warnings but allows retries; exceeding `max_failed_tasks_per_day` escalates to Guardrails.
 
 ## Safety & Ownership
 - Tasks are append-only. Deletion requires a Guardrails-approved migration with memory pointers.

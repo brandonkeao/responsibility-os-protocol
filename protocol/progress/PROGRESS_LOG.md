@@ -8,6 +8,9 @@ Entries are append-only and reverse-chronological.
 - Authored `protocol/RESPONSIBILITY_BOOT_TEMPLATE.md` and wired the boot lifecycle into the responsibility spec so Responsibilities persist BOOT_SUMMARY files and rehydrate Tasks on startup.
 - Logged supporting context docs (`docs/agentic_os_tasks_protocol_update.md`) to keep protocol custodians aligned with the Agentic OS roadmap and SaaS narrative.
 - Added `protocol/TASK_WORKER_BOOT_SPEC.md` capturing the dedicated Task Worker responsibility, safety clauses, and reboot triggers.
+- Collapsed boot operations into `protocol/RESPONSIBILITY_STARTUP_CHECKLIST.md`, introduced `runbooks/dad_mode_boot_runbook.md`, and enforced BOOT_SUMMARY regeneration via `kernel.boot.regenerate` + Guardrails policy updates.
+- Clarified RequestForAction primacy over cross-responsibility Tasks, added `task_sync.state` enumeration, and documented the golden flow fixture (`protocol/examples/fixtures/mandate_to_task_end_to_end.md`).
+- Published telemetry defaults (`protocol/telemetry/policies.default.yaml`) plus policy references inside `protocol/TELEMETRY_SPEC.md` and the filesystem standard so Responsibilities inherit sane thresholds with override hooks.
 
 ## 2025-11-27
 - Introduced mandate terminology (superseding legacy charges) across specs and steward examples.

@@ -87,7 +87,7 @@ The body should include tables or bullet lists referencing metric IDs, alert IDs
 
 ## Policy Template
 
-To avoid ad-hoc thresholds, copy `protocol/telemetry/TELEMETRY_POLICY_TEMPLATE.yaml` into the target workspace (e.g., `telemetry/policies.yaml`) and adjust values per Responsibility. The template includes defaults for:
+To avoid ad-hoc thresholds, start from `protocol/telemetry/policies.default.yaml`. Copy it into the target workspace (e.g., `telemetry/policies.parenting_cos.yaml`) and adjust values per Responsibility. The defaults cover:
 
 - Heartbeat intervals by component (`runtime.uptime`, `safety.runtime_integrity`).
 - Request queue latency and SLA timers (`requests.sla_compliance`).
@@ -95,8 +95,9 @@ To avoid ad-hoc thresholds, copy `protocol/telemetry/TELEMETRY_POLICY_TEMPLATE.y
 - Task Worker sync retry ceilings (`taskworker.sync_integrity`).
 - Model drift enforcement windows (`runtime.model_integrity`).
 - Event retry counts and escalation hooks (`events.retry_policy`).
+- Task Worker sync degradation handling (`taskworker.sync_integrity`).
 
-Kernels should load the policy file at boot and feed the values into telemetry alerting logic so new installations inherit sane thresholds without editing the spec. Any overrides must be recorded in append-only memory with pointers to the policy file version and guardrail clause enforcing it.
+Responsibilities may override the defaults by adding an entry under the `overrides` section keyed by `responsibility_id`. Kernels should load the effective policy at boot, record the file hash in memory, and feed the values into telemetry alerting logic so new installations inherit sane thresholds without editing the spec. Any overrides must be recorded in append-only memory with pointers to the policy file version and guardrail clause enforcing it.
 
 ## Append-Only Memory Hooks
 

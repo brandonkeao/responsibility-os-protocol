@@ -15,3 +15,8 @@ Guardrails define the operative safety, compliance, and ethics boundaries that e
 - If approved, Guardrails sign the decision and return it to the Kernel. If rejected, a remediation instruction is emitted and logged.
 
 Guardrails must be versioned with semantic identifiers. Kernel loads only compatible versions, preventing silent drift between safety code and operational logic.
+
+## BOOT_SUMMARY Enforcement
+- **Ownership** – BOOT\_SUMMARY artifacts are steward-owned but Guardrails enforce that only `kernel.boot.regenerate` may create or update them. Any manual modification attempt (file hash mismatch without a corresponding regeneration entry) triggers `boot_summary_violation` and halts mandate activation.
+- **Drift Control** – Each regeneration logs `(previous_hash, new_hash, responsibility_id)` to memory. Guardrails compare the latest hash against the on-disk file during every Phase 0 check; mismatches block boot.
+- **Auditability** – Guardrails retain a ledger of regeneration events so auditors can prove which policies and tools were in effect at any point in time.

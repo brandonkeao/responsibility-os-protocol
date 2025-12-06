@@ -15,11 +15,13 @@ Future scope areas include trust tooling (cryptographic Guardrails attestations 
 - `protocol/specs/v1/` – ordered specification files (`00_overview.md` → `10_tasks.md`). Read them sequentially to understand how Kernel, Guardrails, personas, mandates, agents, memory, UI translation, and now Task routing interact.
 - `protocol/examples/steward/` – reference steward artifacts (responsibility, kernel, guardrails, persona, and sample mandates) proving the specs are actionable.
 - `protocol/examples/task_worker/` – reusable Task Worker persona, mandates, and BOOT_SUMMARY so service roles can be instantiated verbatim.
+- `protocol/examples/fixtures/mandate_to_task_end_to_end.md` – golden flow showing Mandate → RFA → Task → telemetry/memory updates.
 - `protocol/progress/PROGRESS_LOG.md` – append-only changelog documenting version bumps or adjustments.
 - `protocol/README.md` – quick start guide for anyone authoring protocol materials.
-- Cross-cutting specs live beside the steward examples (`RESPONSIBILITY_FILESYSTEM_STANDARD_V0_1.md`, `RESPONSIBILITY_BOOT_TEMPLATE.md`, `TASK_WORKER_BOOT_SPEC.md`, `AI_CONTEXT_BUNDLES.md`, `REQUEST_FOR_ACTION_SPEC.md`, `RESPONSIBILITY_REGISTRY_SPEC.md`, `INTENT_ROUTER_SPEC.md`, `EVENT_TRIGGER_SPEC.md`, `DATA_LINEAGE_SPEC.md`, `TELEMETRY_SPEC.md`) and define shared infrastructure contracts.
+- Cross-cutting specs live beside the steward examples (`RESPONSIBILITY_FILESYSTEM_STANDARD_V0_1.md`, `RESPONSIBILITY_BOOT_TEMPLATE.md`, `RESPONSIBILITY_STARTUP_CHECKLIST.md`, `TASK_WORKER_BOOT_SPEC.md`, `AI_CONTEXT_BUNDLES.md`, `REQUEST_FOR_ACTION_SPEC.md`, `RESPONSIBILITY_REGISTRY_SPEC.md`, `INTENT_ROUTER_SPEC.md`, `EVENT_TRIGGER_SPEC.md`, `DATA_LINEAGE_SPEC.md`, `TELEMETRY_SPEC.md`) and define shared infrastructure contracts.
 - `docs/agentic_os_tasks_protocol_update.md` documents the Task worker + Google Workspace sync rollout plan.
 - `docs/agentic_os_protocol_tdd.md` provides a narrative walkthrough of the entire Responsibility OS protocol for new contributors.
+- `runbooks/dad_mode_boot_runbook.md` is the operator-facing checklist for bringing Dad Mode online using the new startup checklist.
 
 ## Getting Started
 1. Clone the repository:

@@ -1,0 +1,36 @@
+# Responsibility OS – Telemetry Default Policies
+#
+# Copy this file to `telemetry/policies.<responsibility>.yaml` (or equivalent)
+# inside the Responsibility filesystem to override defaults per environment.
+# All values are safe defaults for single-household Dad Mode deployments.
+
+defaults:
+  max_daily_cost_usd: 25          # Guardrail clause: runtime.cost_budget
+  max_queue_latency_seconds: 900  # 15 minutes SLA for pending RFAs
+  heartbeat_interval_seconds:
+    kernel: 60
+    guardrails: 60
+    task_worker: 120
+  max_failed_tasks_per_day: 3
+  max_failed_task_sync_per_hour: 5
+  task_sync_state_actions:
+    blocked:
+      escalation: immediate
+      request_for_action: runtime_restore_oauth
+    degraded:
+      escalation_after: PT15M
+      alert_severity: warning
+  max_rfa_pending: 25
+  max_rfa_expired_per_day: 0
+  model_cost_alerts_usd:
+    warning: 15
+    critical: 25
+  telemetry_retention_days: 90
+
+overrides:
+  # Example:
+  # parenting_cos:
+  #   max_daily_cost_usd: 35
+  #   heartbeat_interval_seconds:
+  #     task_worker: 90
+  #   max_rfa_pending: 10

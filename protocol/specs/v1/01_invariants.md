@@ -9,5 +9,7 @@ The Kernel enforces deterministic loops that steward agents must follow, and the
 5. **Auditability** – Every action produces a traceable tuple `(kernel_decision_id, guardrail_clause_id, memory_pointer)`. This tuple anchors reviewers to both Kernel and Guardrails artifacts.
 6. **Deterministic Requests** – RequestForAction records live in a SQL-backed queue that enforces status transitions, timestamps, and retries without AI intervention; markdown views are regenerated from the System-of-Record.
 7. **Task Ownership** – Native Tasks are append-only objects. Only the Task Worker (running under Guardrails oversight) may mutate Task status, and sync bridges (e.g., `google_workspace_mcp`) can mirror state into Google Tasks or Calendar without ever deleting the canonical Task.
+8. **Request Primacy** – All cross-responsibility work begins as an accepted RequestForAction. Kernels refuse to create Tasks that reference another Responsibility unless a `request_id` link is present.
+9. **BOOT\_SUMMARY Control** – BOOT\_SUMMARY files may only be generated via `kernel.boot.regenerate`. Guardrails block execution when on-disk content diverges from the last signed hash.
 
 Breaking an invariant requires a protocol version bump recorded in `progress/PROGRESS_LOG.md` so stewards can coordinate upgrades.
