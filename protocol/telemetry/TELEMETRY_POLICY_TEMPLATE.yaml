@@ -1,0 +1,83 @@
+---
+version: 0.1
+generated_at: 2025-11-28T12:20:00Z
+description: >
+  Default telemetry thresholds for Responsibility OS boot trials.
+  Installations should clone this file into each workspace, adjust
+  values, and record overrides in append-only memory.
+---
+
+# Heartbeat expectations per component (seconds between check-ins)
+heartbeat_rules:
+  - component_id: kernel
+    workspace_id: "*"
+    max_interval_seconds: 60
+    severity_map:
+      warning: 90
+      critical: 120
+    guardrail_clause: runtime.uptime
+    remediation:
+      action: spawn_mandate_run
+      mandate_id: mandate.steward.system_health_check
+  - component_id: guardrails
+    workspace_id: "*"
+    max_interval_seconds: 60
+    severity_map:
+      warning: 90
+      critical: 120
+    guardrail_clause: safety.runtime_integrity
+    remediation:
+      action: notify_steward
+      responsibility_id: stewardship_office
+
+# Queue latency thresholds (RequestForAction selection loop)
+queue_latency_rules:
+  - responsibility_id: parenting_cos
+    max_pending_seconds: 1800        # 30 minutes
+    warning_seconds: 2700
+    critical_seconds: 3600
+    guardrail_clause: requests.sla_compliance
+    telemetry_metric: queue_latency_ms
+
+# Cost ceilings per workspace per day (USD equivalent)
+cost_budget_rules:
+  - workspace_id: dad_mode
+    daily_budget_usd: 5.00
+    warning_percent: 0.8
+    critical_percent: 1.0
+    guardrail_clause: runtime.cost_budget
+    note: >
+      Includes model spend plus Google Workspace API costs recorded by the
+      Task Worker and Context Worker.
+
+# Task Worker sync safeguards
+task_sync_rules:
+  - source: google_workspace_mcp
+    max_sync_duration_seconds: 30
+    max_retry_attempts: 3
+    guardrail_clause: taskworker.sync_integrity
+    remediation:
+      action: mark_task_sync_blocked
+      responsibility_id: task_worker
+
+# Model drift escalation
+model_drift_rules:
+  - responsibility_id: parenting_cos
+    enforcement_mode: enforce
+    action_required: notify_parenting_cos
+    guardrail_clause: runtime.model_integrity
+    grace_period_seconds: 900
+
+# Event retry ceilings
+event_retry_rules:
+  - source: google_calendar
+    max_retries: 5
+    guardrail_clause: events.retry_policy
+    escalation_request:
+      target_responsibility_id: context_curator
+      request_template: requests/outbox/context_curator_event_retry.md
+
+# Reporting cadence
+reporting:
+  telemetry_snapshot_interval: PT1H
+  guardrail_clause: runtime.telemetry_reporting

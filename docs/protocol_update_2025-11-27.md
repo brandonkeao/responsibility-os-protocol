@@ -13,7 +13,7 @@ This note summarizes the Responsibility OS protocol refresh driven by the v1.1 c
 - Context bundle guidance now includes model preference declarations and detection/remediation rules.
 
 ## Steward & Persona Updates
-- Steward persona was renamed to **Stewart** and persona spec gained an optional human-readable name field.
+- Steward persona was renamed to **Jane** and persona spec gained an optional human-readable name field.
 - Steward examples now include mandate files plus a sample RequestForAction view (`protocol/examples/steward/request_allowance_plan.md`).
 
 ## Progress Log & Docs

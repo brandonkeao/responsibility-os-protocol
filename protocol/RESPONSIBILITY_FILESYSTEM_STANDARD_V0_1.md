@@ -126,8 +126,33 @@ The `requests/` folder mirrors the SQL queue. Files are generated, not hand-auth
 - `reports/` contain structured reflections (weekly reviews, retros, audits).
 - `memory/events.md` captures chronological append-only notes.
 - `memory/insights.md` contains distilled learnings that survive resets.
-- `meetings/summaries/` stores bullet summaries with metadata (`title`, `date`, `attendees`, `responsibilities_interested`) plus pointers to the raw transcript file.
+- `meetings/summaries/` stores bullet summaries with strict frontmatter that enables deterministic routing. Required fields: `meeting_id`, `title`, `date`, `start_time`, `end_time`, `attendees` (array of `human:<id>` or `responsibility:<id>`), `responsibilities_interested`, `tags`, `transcript_path`, and `source` (mandate run, request, or event ID). Optional fields such as `decision_ids` or `follow_up_requests` may be appended as arrays so kernels can link summaries to canonical artifacts.
 - `meetings/transcripts/` stores the unchunked meeting log (audio-to-text, chat export, etc.). Transcripts are indexed but not broken into arbitrary AI context chunks; instead, summaries reference them and future RAG tooling can re-assess applicability for new Responsibilities.
+
+Meeting summaries must include frontmatter similar to:
+
+```yaml
+---
+meeting_id: meet_2025-11-28_ops_sync
+title: Parenting + Finance Sync
+date: 2025-11-28
+start_time: 15:00Z
+end_time: 15:45Z
+attendees:
+  - human:parent_guardian_a
+  - responsibility:finance_cos
+responsibilities_interested:
+  - parenting_cos
+  - finance_cos
+tags: [cadence, budgeting]
+transcript_path: meetings/transcripts/2025-11-28_ops_sync.md
+source: mandate_run:finance_cos.monthly_budget_review@2025-11-28T09:00Z
+follow_up_requests:
+  - req_2025-11-28T09-15Z_finance_to_parenting_allowance
+---
+```
+
+Guardrails can now reason about which responsibilities must be notified, and deterministic services can regenerate views or run targeted RAG over transcripts by following `transcript_path`.
 - When a new Responsibility joins the workspace, stewards can either review the summaries to identify relevant sessions or run a targeted, potentially expensive, RAG pass across transcripts to discover additional matches.
 
 AI assistants should ingest reports first, then memory, before editing mandates or writing new plans.
@@ -151,5 +176,25 @@ Every Responsibility must declare the preferred AI model(s) inside `ai_context/m
 - Capabilities or mandates that require a specific model family.
 - The currently detected model (reported by the AI runtime or orchestration layer).
 - Required action if the detected model does not match the preference (auto-switch if tooling allows, otherwise notify the user/steward).
+- Enforcement mode (`enforce` vs `monitor`) plus the last verification timestamp so Guardrails can reason about stale drift reports.
 
-Context workers update this file whenever policies change or when a mismatch is detected, ensuring stewards see drift between intended and actual execution environments.
+Context workers update this file whenever policies change or when a mismatch is detected, ensuring stewards see drift between intended and actual execution environments. Author the file using structured frontmatter such as:
+
+```yaml
+---
+preferred_model: gpt-4o
+fallback_models:
+  - gpt-4o-mini
+  - sonnet-3.5
+capability_overrides:
+  - mandate: mandate.parenting.allowance_design
+    required_model: gpt-4o
+last_detected_model: gpt-4o-mini
+enforcement_mode: enforce
+action_required: notify_parenting_cos
+last_checked_at: 2025-11-28T10:05:00Z
+guardrail_clause: runtime.model_integrity
+---
+```
+
+Context workers append an entry to `ai_context/recent_activity.md` whenever `last_detected_model` differs from `preferred_model` and must follow the listed `action_required` instructions.

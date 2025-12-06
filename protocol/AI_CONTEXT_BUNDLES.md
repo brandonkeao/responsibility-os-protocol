@@ -24,6 +24,29 @@ A dedicated Responsibility (e.g., `context_curator`) owns mandates such as:
 
 The worker executes on schedules (hourly/daily) and on events (mandate run completed, request status changed). Outputs are append-only (new sections with timestamps) or wholesale refreshes when the file is explicitly marked as such.
 
+## Model Preference Schema
+
+`ai_context/model_preferences.md` must include the structured fields below so orchestration layers and Guardrails can enforce model policy consistently:
+
+```yaml
+---
+preferred_model: gpt-4o
+fallback_models:
+  - gpt-4o-mini
+  - sonnet-3.5
+capability_overrides:
+  - mandate: mandate.parenting.allowance_design
+    required_model: gpt-4o
+last_detected_model: gpt-4o-mini
+enforcement_mode: enforce   # enforce | monitor
+action_required: notify_parenting_cos
+last_checked_at: 2025-11-28T10:05:00Z
+guardrail_clause: runtime.model_integrity
+---
+```
+
+Context workers must update `last_checked_at` during every refresh, set `last_detected_model` based on telemetry, and follow `action_required` when a mismatch occurs (e.g., trigger an auto-switch or notify a steward). When drift is detected they also append a note to `ai_context/recent_activity.md` referencing the same timestamp so auditors can correlate actions.
+
 ## Usage Rules
 
 - **Primary Context Pack** – All AI calls that act on a Responsibility should default to loading the four core files plus any files referenced within them. Deep dives can fetch additional reports or mandate runs by following those links.

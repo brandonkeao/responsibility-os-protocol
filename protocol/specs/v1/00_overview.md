@@ -9,7 +9,7 @@ The Responsibility OS Protocol v1 defines how autonomous or co-pilot style syste
 - Clarify the split between the **System-of-Record** (deterministic SQL-backed queues) and the **System-of-Context** (markdown + JSON directories stewarded by AI).
 
 ## Structure
-1. `01_invariants` to `09_ui_translation` form a linear specification. Each file references how the Kernel and Guardrails apply to that layer.
+1. `01_invariants` to `10_tasks` form a linear specification. Each file references how the Kernel and Guardrails apply to that layer.
 2. Steward examples show how to instantiate the protocol without embedding product logic.
 3. Progress log captures protocol adjustments for future stewards.
 

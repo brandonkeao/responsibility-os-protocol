@@ -33,6 +33,24 @@ When the Kernel activates a mandate it creates a **mandate run** record:
 
 Mandates are immutable once activated. Any change requires creating a new run or new definition so history remains append-only.
 
+## Task Materialization
+
+Every active mandate now emits a list of canonical Tasks before Responsibilities route work. The Kernel populates the schema defined in `docs/agentic_os_tasks_protocol_update.md`:
+
+- `task_id` (`uuid`), `mandate_id`, `title`, `description`
+- `preferred_responsibilities` (`[]string`) – hints for routing when multiple Responsibilities share the same mandate scope.
+- `status` (`needs_action | in_progress | blocked | completed`) with Guardrails-approved transitions enforced by the Task Worker.
+- `priority` (`low | normal | high`, mapped deterministically to integer queues) and optional `due_date`.
+- `external_refs` for Google Task IDs or calendar events created via `google_workspace_mcp`; sync bridges may create/update external artifacts but never delete Tasks.
+- `source` (gmail, voice, manual, automation) plus timestamps (`created_at`, `updated_at`).
+
+Mandate runs cite the Task IDs they spawned so auditors can trace Mandate → Task → Responsibility decisions. Only the Task Worker can mutate status fields. Kernel+Guardrails treat missing Task references as a protocol violation and will block execution until the Tasks are rehydrated.
+
+**Safety Rules**
+- Tasks are never auto-deleted; archival requires a Guardrails-approved migration entry.
+- Calendar deletions cannot cascade into Task removal.
+- Only the Task Worker may transition Task status, priority, or due dates.
+
 ## Relationship to Requests
 
 - Mandates = internal authority (System-of-Context) with deterministic activation via Kernel APIs.

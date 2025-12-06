@@ -4,7 +4,7 @@ Memory is a tamper-evident, append-only ledger that stores every Kernel decision
 
 ## Principles
 1. **Append-Only Writes** – Kernel exposes only `memory.append(record)`; there is no update or delete verb. Guardrails monitor the log to detect forbidden mutations.
-2. **Structured Entries** – Each record contains `timestamp`, `actor`, `mandate_run_id` or `request_id`, `kernel_decision_id`, `guardrail_clause_id`, and a payload. Payloads can reference artifacts but cannot include personal data.
+2. **Structured Entries** – Each record contains `timestamp`, `actor`, `mandate_run_id` or `request_id`, `task_id` (when applicable), `kernel_decision_id`, `guardrail_clause_id`, and a payload. Payloads can reference artifacts but cannot include personal data.
 3. **Integrity** – Guardrails hash every entry and store rolling digests so append-only history can be audited externally.
 4. **Access** – Read operations stream ordered views. Kernel enforces pagination while Guardrails redact sensitive clauses when required.
 
