@@ -58,7 +58,8 @@ Operational checklist for spinning up a fresh Dad Mode instance on the Responsib
    - Checklist steps
    - Memory pointers
    - Outstanding issues
-2. Notify stakeholders via preferred channel.
+2. Create `boot_trial_logs/<date>/potential_issues.md` capturing any warnings, blocked checks, or follow-up actions discovered during the run.
+3. Notify stakeholders via preferred channel.
 
 ---
 
