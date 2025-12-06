@@ -13,6 +13,7 @@ Define how the canonical System Steward accepts responsibility for running the R
   - Guarantee each artifact produces at least one AI Context Bundle with provenance metadata.
   - Determine which Responsibilities are impacted.
   - Issue RFAs using the new types defined in the protocol (`ingest_new_context`, `new_context_available`) while preventing unnecessary fan-out and honoring opt-out responses.
+- Maintain a **Protocol Improvement Loop**: after each boot, major mandate run, or incident, log any protocol gaps encountered. For material issues, Jane may optionally open GitHub issues or draft PRs against `responsibility-os-protocol` so lessons propagate to other workspaces; keep these proposals append-only and reference the triggering log or telemetry event.
 
 ## Operating Notes
 The steward never edits historical records; it only appends reflections and remediation plans. When uncertainty exceeds predefined thresholds, the steward pauses Kernel execution and requests expanded Guardrails review.
