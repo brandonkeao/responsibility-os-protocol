@@ -14,6 +14,53 @@ Use this guide any time you want to stand up a fresh local workspace and apply o
    - **Context hygiene check**: before first run, scan context files for total volume; keep <2,500 lines (Green). If 2,500–3,000 (Yellow), monitor; >3,000 (Red) requires consolidation and “When to use this workflow” triggers for critical procedures. Guardrails should block additions that increase volume by >10% without consolidation.
 3. Add a `boot_trial_logs/` folder with no files yet—runbooks will drop logs there after execution and it should stay gitignored inside the instance.
 
+### Optional: Local SQLite SoR (development)
+If you want a quick, local System of Record for RFAs/registry/telemetry during boot, create a SQLite db at the workspace root and point the workspace config to it (e.g., `RESPONSIBILITY_OS_SOR=./sor.sqlite`).
+
+```bash
+sqlite3 sor.sqlite <<'SQL'
+CREATE TABLE IF NOT EXISTS responsibilities (
+  id TEXT PRIMARY KEY,
+  workspace_id TEXT NOT NULL,
+  name TEXT,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS rfas (
+  id TEXT PRIMARY KEY,
+  workspace_id TEXT NOT NULL,
+  status TEXT NOT NULL,
+  payload TEXT NOT NULL,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS telemetry_metrics (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  workspace_id TEXT NOT NULL,
+  component_id TEXT NOT NULL,
+  metric_name TEXT NOT NULL,
+  status TEXT NOT NULL,
+  value REAL,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS telemetry_alerts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  workspace_id TEXT NOT NULL,
+  metric_id INTEGER NOT NULL,
+  status TEXT NOT NULL,
+  summary TEXT,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+INSERT OR IGNORE INTO responsibilities (id, workspace_id, name)
+VALUES ('steward_jane', 'workspace_dev', 'Steward Jane');
+INSERT OR IGNORE INTO rfas (id, workspace_id, status, payload)
+VALUES ('rfa_boot_placeholder', 'workspace_dev', 'open',
+        '{"type":"ingest_new_context","scope":"boot_validation","notes":"placeholder RFA created at boot"}');
+SQL
+```
+
+- During first boot, emit a heartbeat to `telemetry_metrics` (status `ok`) and write a matching JSON snapshot under `telemetry/heartbeats/`.
+- Regenerate `queue/inbox/` mirrors from the RFA table (or hand-author a placeholder mirror pointing to `rfa_boot_placeholder` with `workspace_id` in frontmatter) so the steward can narrate the open item.
+
 ## 2. Make a Runbook Boot Request
 When you are ready to boot, create a lightweight request file so the action is auditable:
 
