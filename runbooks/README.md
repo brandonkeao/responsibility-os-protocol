@@ -12,6 +12,7 @@ Use this guide any time you want to stand up a fresh local workspace and apply o
    - Copy templates from `protocol/examples/` (steward persona, guardrails, mandates) and `protocol/telemetry/TELEMETRY_POLICY_TEMPLATE.yaml` → `telemetry/policies.yaml` (or `policies.<responsibility>.yaml`) and ensure `telemetry/heartbeats/` exists for boot heartbeats.
    - **Load Jane by default**: scaffold `steward_jane` from `protocol/examples/steward/` (persona/kernel/guardrails/mandates/BOOT_SUMMARY) unless the operator explicitly chooses another steward variant. On startup, prompt the operator: “Use default Jane steward? Add any other example responsibilities (e.g., task_worker)?” and copy additional examples as requested.
    - **Context hygiene check**: before first run, scan context files for total volume; keep <2,500 lines (Green). If 2,500–3,000 (Yellow), monitor; >3,000 (Red) requires consolidation and “When to use this workflow” triggers for critical procedures. Guardrails should block additions that increase volume by >10% without consolidation.
+   - **Command entrypoint**: define a default “start” command that auto-loads steward context + selected responsibilities (akin to slash-commands) so operators begin with the right bundle every session.
 3. Add a `boot_trial_logs/` folder with no files yet—runbooks will drop logs there after execution and it should stay gitignored inside the instance.
 
 ### Optional: Local SQLite SoR (development)

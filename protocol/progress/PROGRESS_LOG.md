@@ -20,6 +20,7 @@ Entries are append-only and reverse-chronological.
 - Added per-Responsibility model declaration + boot-time enforcement hooks, updated startup/runbook docs, and logged requirements in the invariants/specs.
 - Refined steward persona template (Jane) with orientation prompts, human-in-loop cues, user-input logging workflow, and quick-start next-step options informed by marketing boot.
 - Captured context hygiene patterns: volume thresholds (<2,500 green, >3,000 consolidate), operational workflow prominence (>10%), pre-change volume checks, telemetry `context_volume`, and steward audits of scaffolded folders and “when to use” triggers.
+- Added meta-agent (Agent Coach) duties to steward responsibility, cross-responsibility orchestration guidance, command entrypoint recommendation, session log template, and workspace topology diagram encouragement.
 
 ## 2025-11-27
 - Introduced mandate terminology (superseding legacy charges) across specs and steward examples.

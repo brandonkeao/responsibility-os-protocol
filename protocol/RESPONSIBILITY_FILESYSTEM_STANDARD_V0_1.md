@@ -132,6 +132,7 @@ The `requests/` folder mirrors the SQL queue. Files are generated, not hand-auth
 - `reports/` contain structured reflections (weekly reviews, retros, audits).
 - `memory/events.md` captures chronological append-only notes.
 - `memory/insights.md` contains distilled learnings that survive resets.
+- Session logs may live in `memory/events.md` or dedicated dated files under `memory/` and should capture decision, rationale, next steps, and related file pointers for repeatability.
 - `meetings/summaries/` stores bullet summaries with strict frontmatter that enables deterministic routing. Required fields: `meeting_id`, `title`, `date`, `start_time`, `end_time`, `attendees` (array of `human:<id>` or `responsibility:<id>`), `responsibilities_interested`, `tags`, `transcript_path`, and `source` (mandate run, request, or event ID). Optional fields such as `decision_ids` or `follow_up_requests` may be appended as arrays so kernels can link summaries to canonical artifacts.
 - `meetings/transcripts/` stores the unchunked meeting log (audio-to-text, chat export, etc.). Transcripts are indexed but not broken into arbitrary AI context chunks; instead, summaries reference them and future RAG tooling can re-assess applicability for new Responsibilities.
 
@@ -176,6 +177,7 @@ Automation should offer a consistent intake helper or template so every Responsi
 ## UI Definitions
 
 `ui/views/*.json` define how future graphical interfaces should render the Responsibility state. Each view lists source files so revisions are transparent. `ui/diagrams/*.mermaid` stores graph definitions that can be rendered into SVG or ASCII.
+- Workspaces are encouraged to add a **topology/architecture diagram** (mermaid) showing Responsibilities, flows, and orchestrators (e.g., “data_manager” hub) so stewardship and audits can reason about routing paths.
 
 ## Scratch Space
 
