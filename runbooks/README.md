@@ -10,6 +10,7 @@ Use this guide any time you want to stand up a fresh local workspace and apply o
    - `persona.md`, `guardrails.md`, `mandates/definitions/`, `tasks/index.json`, `memory/events.md`, `queue/`, `ai_context/`, `telemetry/`, `BOOT_SUMMARY.latest.json` placeholder, etc.
    - Seed `tasks/index.json` with `needs_action` placeholders aligned to mandate scope so Task hydration has deterministic targets.
    - Copy templates from `protocol/examples/` (steward persona, guardrails, mandates) and `protocol/telemetry/TELEMETRY_POLICY_TEMPLATE.yaml` → `telemetry/policies.yaml` (or `policies.<responsibility>.yaml`) and ensure `telemetry/heartbeats/` exists for boot heartbeats.
+   - **Load Jane by default**: scaffold `steward_jane` from `protocol/examples/steward/` (persona/kernel/guardrails/mandates/BOOT_SUMMARY) unless the operator explicitly chooses another steward variant. On startup, prompt the operator: “Use default Jane steward? Add any other example responsibilities (e.g., task_worker)?” and copy additional examples as requested.
 3. Add a `boot_trial_logs/` folder with no files yet—runbooks will drop logs there after execution and it should stay gitignored inside the instance.
 
 ## 2. Make a Runbook Boot Request
