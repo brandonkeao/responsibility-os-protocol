@@ -25,3 +25,8 @@ Guardrails must be versioned with semantic identifiers. Kernel loads only compat
 - Guardrails ensure only the designated steward for a workspace can change bundle `ingestion_status`, originate `new_context_available` RFAs, or accept `ingest_new_context` requests.
 - Every transition logs telemetry (`context_ingested`, `context_dispatched`) and a memory pointer; Guardrails compare bundle metadata (origin, scope, responsibilities) to the RFAs generated to prevent over-dispatch.
 - Opt-out acknowledgments from Responsibilities must be honored; Guardrails block repeated notifications when a Responsibility marked the context as irrelevant unless new scope is provided.
+
+## Context Hygiene Enforcement
+- Guardrails ingest a `context_volume` metric emitted during bundle refresh. If total context exceeds thresholds (Green <2,500 lines; Yellow 2,500–3,000 monitor; Red >3,000), Guardrails may require consolidation or explicit steward override before publishing bundles.
+- Guardrails verify critical operational workflows retain prominence (>10% of total bundle) and are not displaced by verification/meta docs; if prominence falls, block or warn until consolidation is applied.
+- Changes that increase context volume by >10% without consolidation prompts are flagged for steward approval and logged to append-only memory with rationale.

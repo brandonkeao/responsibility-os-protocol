@@ -92,3 +92,9 @@ Both flows record telemetry events (`context_ingested`, `context_dispatched`) an
 - **Regeneration Triggers** – Whenever a mandate run closes or a RequestForAction changes state, the kernel signals the context worker to refresh `recent_activity.md` and `open_requests.md` before the next AI session.
 
 By standardizing bundles, Responsibility OS keeps LLM usage predictable: AI consumes concise, curated context while deterministic services own truth, leading to faster responses, lower cost, and safer autonomy.
+
+## Context Hygiene Guardrails
+- **Volume thresholds** – Track total context volume per Responsibility. Green: <2,500 lines; Yellow: 2,500–3,000 (monitor); Red: >3,000 requires consolidation before adding more. Critical workflows should retain >10% prominence of the total bundle.
+- **Prominence protection** – Do not bury operational workflows under verification or meta-docs. Prefer consolidation (e.g., append verification as a final phase in the primary workflow) and add “When to use this workflow” triggers.
+- **Pre-change check** – If a change adds >10% to total context volume, require an explicit Guardrails check or steward approval and consider consolidation first.
+- **Telemetry hook** – Emit a `context_volume` metric during bundle refresh; Guardrails may block bundle publication if thresholds are exceeded without an override.
