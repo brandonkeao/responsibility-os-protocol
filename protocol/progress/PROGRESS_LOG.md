@@ -18,6 +18,7 @@ Entries are append-only and reverse-chronological.
 - Added bundle metadata + ingestion flows to `protocol/AI_CONTEXT_BUNDLES.md`, including steward-managed `ingestion_status` transitions.
 - Introduced context telemetry events (`context_ingested`, `context_dispatched`) plus `model_mismatch_on_boot`, with policy defaults and Guardrails enforcement.
 - Added per-Responsibility model declaration + boot-time enforcement hooks, updated startup/runbook docs, and logged requirements in the invariants/specs.
+- Refined steward persona template (Jane) with orientation prompts, human-in-loop cues, user-input logging workflow, and quick-start next-step options informed by marketing boot.
 
 ## 2025-11-27
 - Introduced mandate terminology (superseding legacy charges) across specs and steward examples.
