@@ -98,3 +98,9 @@ By standardizing bundles, Responsibility OS keeps LLM usage predictable: AI cons
 - **Prominence protection** – Do not bury operational workflows under verification or meta-docs. Prefer consolidation (e.g., append verification as a final phase in the primary workflow) and add “When to use this workflow” triggers.
 - **Pre-change check** – If a change adds >10% to total context volume, require an explicit Guardrails check or steward approval and consider consolidation first.
 - **Telemetry hook** – Emit a `context_volume` metric during bundle refresh; Guardrails may block bundle publication if thresholds are exceeded without an override.
+
+## Context Packs and Synthesis
+- Context Packs under `context/packs/` are curated inputs to bundles. They must not be concatenated directly into prompts; the context worker or planner selects relevant pack files and synthesizes them into a Unified Task Brief (UTB).
+- **Unified Task Brief (UTB)**: 500–1,200 tokens that states the task goal once, distills the top principles, normalizes style to the steward persona/Golden Identity Prompt, and inlines only necessary structures/constraints. UTB is the only pack-derived content admitted to the execution prompt.
+- **Golden Identity Prompt**: A human-authored anchor (see Guardrails) that holds mission/optimization/decision style/ethics/voice/failure modes. UTB must respect it; persona + guardrails remain authoritative for safety.
+- **Density warnings**: When estimated UTB + pack-derived content exceeds 2,000–3,500 tokens, emit a warning (not a block), log to telemetry, and require operator confirmation for overrides.

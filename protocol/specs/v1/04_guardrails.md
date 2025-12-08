@@ -30,3 +30,10 @@ Guardrails must be versioned with semantic identifiers. Kernel loads only compat
 - Guardrails ingest a `context_volume` metric emitted during bundle refresh. If total context exceeds thresholds (Green <2,500 lines; Yellow 2,500–3,000 monitor; Red >3,000), Guardrails may require consolidation or explicit steward override before publishing bundles.
 - Guardrails verify critical operational workflows retain prominence (>10% of total bundle) and are not displaced by verification/meta docs; if prominence falls, block or warn until consolidation is applied.
 - Changes that increase context volume by >10% without consolidation prompts are flagged for steward approval and logged to append-only memory with rationale.
+
+## Golden Identity Prompt and UTB
+- A Responsibility must provide a human-authored Golden Identity Prompt (GIP) defining mission, optimization, decision style, ethics, voice, and failure modes. GIP is stored alongside persona (e.g., `persona/golden_identity.md`) with RFS frontmatter and patch-proposal change control.
+- Guardrails block boot/mandate execution if GIP is missing or unsigned; remediation is to author/approve GIP and re-run boot checks.
+- GIP anchors style/intent; it must not override safety clauses. Precedence: Guardrails > GIP/persona > UTB > memory injections.
+- Context Packs feed a Unified Task Brief (UTB); Guardrails require that UTB generation succeeds and respects GIP. If UTB synthesis fails, block execution and log to memory/telemetry.
+- Guardrails log context density warnings when UTB + pack-derived content exceeds 2,000–3,500 tokens; warnings do not block by default but require operator acknowledgment for overrides.

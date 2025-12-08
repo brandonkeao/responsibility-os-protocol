@@ -69,6 +69,12 @@ RFS defines how each Responsibility organizes markdown, JSON, and log artifacts 
   telemetry/
     policies.<responsibility>.yaml
     heartbeats/
+
+  context/
+    packs/
+      <pack_id>/
+        context_pack.yaml
+        *.md   # structured context files (3–6)
 ```
 
 Responsibilities may add folders, but they must not remove or repurpose the namespaces above.
@@ -178,6 +184,10 @@ Automation should offer a consistent intake helper or template so every Responsi
 
 `ui/views/*.json` define how future graphical interfaces should render the Responsibility state. Each view lists source files so revisions are transparent. `ui/diagrams/*.mermaid` stores graph definitions that can be rendered into SVG or ASCII.
 - Workspaces are encouraged to add a **topology/architecture diagram** (mermaid) showing Responsibilities, flows, and orchestrators (e.g., “data_manager” hub) so stewardship and audits can reason about routing paths.
+
+## Context Packs
+
+Context Packs live under `context/packs/<pack_id>/` with a `context_pack.yaml` manifest plus 3–6 structured markdown files. Files must include frontmatter (id, discipline, type, scope, version, tags, load_strategy, max_tokens_hint) and follow RFS provenance rules. Packs are append-only; material changes go through patch proposals. Packs feed AI Context Bundles; they are not concatenated directly into prompts.
 
 ## Scratch Space
 
