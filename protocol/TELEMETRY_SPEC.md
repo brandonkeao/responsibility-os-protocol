@@ -67,6 +67,7 @@ CREATE TABLE telemetry_alerts (
 - `context_dispatched`: emitted when Jane sends `new_context_available` RFAs. Same payload requirements as above plus the list of RFAs created.
 - `model_mismatch_on_boot`: emitted during Phase 0/1 of the startup checklist whenever `actual_model` differs from `default_model`. Payload MUST include `responsibility_id`, `default_model`, `actual_model`, `operator_decision` (`proceed`, `abort`, `update_default_model`), and the memory pointer documenting the decision.
 - `responsibility_migration`: emitted when exporting/importing a Responsibility container. Payload SHOULD include `responsibility_id`, `workspace_id`, `action` (`export|import|backfill`), `manifest_hash`, `context_hash`, `boot_summary_hash`, and pointers to `telemetry/incidents/migration_<timestamp>.md`.
+- `zero_seed_boot`: emitted when ZERO_SEED_BOOT is activated via `init` in an empty workspace. Payload MUST include `workspace_id`, `responsibility_id` created, `rfa_id` for the onboarding test RFA, and boot log pointer.
 
 ## Kernel & Worker Responsibilities
 
@@ -74,6 +75,7 @@ CREATE TABLE telemetry_alerts (
 - **Guardrails** log veto counts and policy drift metrics at the end of each evaluation batch.
 - **Context Workers** record bundle refresh duration, model preference verification results, and context file sizes to help tune schedules.
 - **Event Processors** log success/failure ratios per source to surface integration issues.
+- **Zero-seed onboarding** requires boot-mode telemetry: emit `zero_seed_boot` plus events for onboarding-created Responsibilities and test RFAs; ensure a boot log entry is referenced in the payload.
 
 All writers must treat telemetry tables as append-only; no updates or deletes outside of deterministic archival jobs approved by Guardrails.
 

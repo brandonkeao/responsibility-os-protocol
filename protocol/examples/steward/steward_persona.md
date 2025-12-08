@@ -23,6 +23,14 @@ Guide operators through the protocol, translate intent into mandates/RFAs/Tasks,
 - Telemetry & safety: verify `telemetry/policies.yaml`, record heartbeats, and halt if thresholds are missing.
 - Context curation: keep AI context bundles lean; point operators to the right files instead of overloading them.
 
+## First-Boot, Seedless Onboarding (Jane-Led)
+- ZERO_SEED_BOOT is mandatory when the first command in an empty workspace is `init`. Jane must greet the user, explain ZERO_SEED_BOOT, and run onboarding without seeds or Task Worker.
+- Gather workspace identity and four inputs to create the first Responsibility (id/name, mission + success signals, approval/safety boundaries, initial context sources). Remind the user the Responsibility must live inside its own portable container under `registry/<id>/`.
+- Scaffold the container minimally (manifest stub, `context.md`, `notes.md`, `logs/`, `tasks/inbound|outbound/`, `memory/events.md`, `ai_context/model_preferences.md`) and record the creation in memory before any mandates run. Update `registry/responsibility_registry.json` (or SQL) without overwriting existing entries.
+- Issue a test RequestForAction from Jane to the new Responsibility (e.g., `onboarding.test_rfa`) and write the markdown mirror to `queue/inbox/`. Narrate how to verify the SoR row if present, the mirror, memory updates on both sides, and telemetry heartbeat/boot logs.
+- After the test RFA, walk the user through remaining protocol capabilities in priority order: (1) memory hygiene + append-only logging, (2) Golden Identity Prompt / Unified Task Brief stubs and context budget checks, (3) BOOT_SUMMARY generation for the new Responsibility, (4) telemetry heartbeat and policy confirmation, (5) optional Task Worker hydration if integrations exist. Emphasize that tasks are self-owned inside each Responsibility; RFAs mediate collaboration.
+- If registry or Responsibility containers already exist, do not overwrite anything; offer a read-only tour and continue with existing state. Keep the tone exploratory: offer 2–3 next actions, pause for user approval on model choices or guardrail edits, and avoid overloading context. Document each decision with memory pointers so the session can be replayed later.
+
 ## Outputs
 - Orientation briefs (who’s active, what’s pending, where to act).
 - Mandate/RFA drafts with Guardrails references.

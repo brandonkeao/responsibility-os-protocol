@@ -5,13 +5,15 @@ change_risk: medium
 
 # Task Specification
 
-Tasks are now first-class, append-only records that sit between Mandates and Responsibilities. They capture the exact unit of work the Kernel expects a Responsibility to execute and provide the bridge into external productivity suites (e.g., Google Workspace) via `google_workspace_mcp`.
+Tasks are now first-class, append-only records that sit between Mandates and Responsibilities. They capture the exact unit of work the Kernel expects a Responsibility to execute. Cross-responsibility asks flow through RFAs; once accepted, the target Responsibility creates and executes its own Tasks inside its portable container.
 
 ## Purpose & Placement
 - **Chain enforcement** – Tasks formalize the Mandate → Task → Responsibility → Action flow so every action cites both authority (mandate) and execution ownership (responsibility).
-- **Context portability** – Tasks are stored in the Responsibility filesystem and replicated to trusted providers (Google Tasks, Calendar) without forfeiting protocol guarantees.
-- **Tool interoperability** – Only the Task Worker may mutate Task state; LLMs and external automations must go through Kernel-issued commands.
-- **Placement** – Global task queues live under `tasks/queue`; per-Responsibility tasks live inside the portable container at `registry/<responsibility_id>/tasks/inbound` (inputs) and `tasks/outbound` (outputs/responses). Task Worker must respect both locations and avoid cross-writing between Responsibilities.
+- **Responsibility ownership first** – Each Responsibility creates and executes its own Tasks inside its container after accepting an RFA; no Responsibility may place Tasks into another’s container.
+- **Context portability** – Tasks live in the Responsibility filesystem (`registry/<responsibility_id>/tasks/inbound|outbound`) so they travel with the container; optional mirrors to external suites must never override the filesystem source of truth.
+- **Tool interoperability** – Only the Task Worker may mutate Task state; LLMs and automations go through Kernel-issued commands.
+- **Placement** – Global task queues are optional; per-Responsibility tasks reside in the portable container at `registry/<responsibility_id>/tasks/inbound` (inputs) and `tasks/outbound` (outputs/responses). Task Worker must avoid cross-writing between Responsibilities.
+- **Zero-seed onboarding** – During ZERO_SEED_BOOT, no Task Worker is required. Jane may draft a minimal onboarding Task or rely on the test RFA alone; any status changes are narrated and recorded in memory until a Task Worker is available.
 
 ## Canonical Schema
 
@@ -52,12 +54,10 @@ Additional implementation notes:
 
 ## Sync Model
 1. **Internal Task Store** – Markdown or structured JSON files inside the Responsibility filesystem serve as the source of truth.
-2. **Google Task Mirror** – `google_workspace_mcp` mirrors title, description, due date, and status to Google Tasks for steward visibility. Google-side IDs are stored under `external_refs.google_task_id`.
-3. **Calendar Binding** – Optional `calendar_event_id` links blockers or deadlines to Google Calendar. Calendar deletions never delete Tasks; they simply clear the binding and log a memory event.
+2. **Optional Mirrors** – External mirrors (e.g., Google Tasks/Calendar) are convenience copies only; they must never delete or override Tasks stored in the filesystem. If used, IDs live under `external_refs.*`.
+3. **Event Logging** – All Task issuance, acceptance, and completion events are written to the centralized system event log in addition to Responsibility memory to support workspace-wide coordination.
 
-Sync bridges are one-way initiators: they may create or update external artifacts but must never delete or overwrite Tasks stored in the filesystem. Kernel logs every sync command, and Guardrails confirm that the Task Worker executed it successfully.
-
-If `task_sync.state` transitions to `blocked` all dependent Responsibilities must halt Task execution (`kernel.tasks.issue` rejects commands) until OAuth credentials are restored. `degraded` state adds telemetry warnings but allows retries; exceeding `max_failed_tasks_per_day` escalates to Guardrails.
+If `task_sync.state` transitions to `blocked` all dependent Responsibilities must halt Task execution (`kernel.tasks.issue` rejects commands) until remediation. `degraded` state may allow retries with warnings; exceeding `max_failed_tasks_per_day` escalates to Guardrails.
 
 ## Safety & Ownership
 - Tasks are append-only. Deletion requires a Guardrails-approved migration with memory pointers.
@@ -65,11 +65,12 @@ If `task_sync.state` transitions to `blocked` all dependent Responsibilities mus
 - Calendar or Gmail cleanup cannot cascade into Task removal.
 - Every Task references a Mandate run ID and, when applicable, a RequestForAction ID; missing references cause the Kernel to halt execution.
 - Tasks are strictly internal to a Responsibility/workspace; collaboration between Responsibilities always begins as an RFA even if Tasks eventually mirror the work.
+- Responsibilities may open Tasks for themselves proactively (self-serve) or in response to accepted RFAs; both paths must record issuance and updates in memory and the system event log.
 
 ## Migration Strategy
-1. **Phase 1 – Gmail + Calendar + Tasks**: Stand up Task Worker + `google_workspace_mcp` connectors and confirm sync loops.
-2. **Phase 2 – Internal Task DB**: Promote the filesystem-backed Task store to the source of truth, keeping Google Tasks as a convenience mirror.
-3. **Phase 3 – Cross-System Routing**: Route Tasks between Responsibilities and external partners while preserving Mandate + Guardrails references.
+1. **Phase 1 – Filesystem Source of Truth**: Stand up the Task Worker and keep the filesystem as the only authoritative store.
+2. **Phase 2 – Optional Mirrors**: If needed, add external mirrors without ceding authority; verify that deletions/edits never flow inward.
+3. **Phase 3 – Cross-System Routing**: When integrating external partners, enforce RFA-first coordination and maintain Mandate + Guardrails references.
 
 Each migration phase must be recorded in `protocol/progress/PROGRESS_LOG.md` for downstream stewards.
 

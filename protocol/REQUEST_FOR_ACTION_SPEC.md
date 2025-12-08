@@ -5,6 +5,14 @@ RequestForAction (RFA) entries are queued, deterministic messages that allow one
 - **System-of-Record (SoR):** a local SQL database that enforces IDs, status transitions, timestamps, and retries. AI never mutates this layer directly; only deterministic services or humans acting through tooling may run SQL commands.
 - **System-of-Context (SoC):** regenerated markdown views (e.g., `queue/inbox/<request_id>.md`) that make RFAs legible to stewards and LLMs. These files cite the SoR row and may include narrative summaries, links, and checklists.
 
+## Zero-Seed Onboarding RFA (Example)
+- When ZERO_SEED_BOOT is triggered and `init` is the first command, Jane must create a test RFA without relying on a Task Worker:
+  - **Origin:** `steward_jane`
+  - **Target:** the newly created Responsibility
+  - **Type/Subject:** `onboarding.test_rfa` (e.g., “Confirm your container and acknowledge append-only memory”)
+  - **Disk location:** markdown mirror at `queue/inbox/<rfa_id>.md` with frontmatter referencing the new responsibility id and workspace id. If an SoR exists, insert the row; otherwise, the markdown mirror acts as the initial record.
+  - **Handling:** Jane narrates the RFA to the user; the new Responsibility acknowledges via append-only memory entry instead of Task Worker mediation. Task Worker is optional and may be added later.
+
 ## Canonical Schema
 
 ```sql
@@ -185,3 +193,9 @@ Receiving Responsibilities should:
 Guardrails verify that only steward personas can originate `new_context_available` RFAs and that every `ingest_new_context` request transitions through steward review before downstream dispatch.
 
 > **RFA vs Task Separation:** RFAs always mediate cross-responsibility coordination at the workspace boundary. Once a Responsibility accepts the ask, it materializes its own Tasks internally; Tasks must never be used as substitutes for RFAs when collaboration or ingestion responsibilities span multiple Responsibilities.
+
+## Agent-to-Agent Collaboration Contract
+- **Handshake** – Origin issues RFA (SoR row + markdown mirror). Target acknowledges by moving to `accepted` and appending memory + centralized event log entries.
+- **Decision** – Target either spawns Tasks inside its own container or defers/rejects with rationale; origin’s memory/event log reflects the decision.
+- **Fan-out Control** – Steward/Jane mediates high-fan-out RFAs; Responsibilities avoid peer-to-peer flooding without steward approval.
+- **Auditing** – Every status change writes to `request_events`, target memory, and the system event log with guardrail clause references.

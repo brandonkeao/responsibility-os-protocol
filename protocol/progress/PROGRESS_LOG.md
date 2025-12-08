@@ -2,6 +2,12 @@
 
 Entries are append-only and reverse-chronological.
 
+## 2025-12-09
+- Enabled seedless first-boot flow: Jane now onboards users without seed data, scaffolds the first Responsibility container, and drives a test RFA handshake before other automation.
+- Updated steward mandate + persona to emphasize portable containers, test RFAs, and prioritized post-onboarding checks (memory hygiene, identity prompt/UTB stubs, BOOT_SUMMARY, telemetry).
+- Refactored Dad Mode boot runbook for seedless onboarding and clarified registry/telemetry expectations.
+- Clarified boot template and portability contract to allow empty registries on first boot while still enforcing per-responsibility containers thereafter; tightened invariants around ops-as-observability, agentic primacy, and centralized event logging for RFAs/Tasks.
+
 ## 2025-12-08
 - Enforced Responsibility encapsulation as a protocol invariant: every instantiated Responsibility must reside in a dedicated portable container (`registry/<id>/` with context, manifest, logs, tasks inbox/outbox, notes) and registry files act as indexes, not primary state.
 - Added deterministic first-boot contract updates across specs/checklists/boot template to require scaffolding the containers; disallowed cross-responsibility writes.
@@ -9,6 +15,12 @@ Entries are append-only and reverse-chronological.
 - Updated task placement rules (per-responsibility inbox/outbox vs global queues) and Task Worker obligations; added telemetry migration event guidance.
 - Refreshed registry spec, filesystem standard, and startup checklist to reflect the new container layout and registry index role.
 - Introduced three-layer governance (core agentic, context/memory infrastructure, ops infrastructure) with mandatory spec frontmatter (`layer`, `change_risk`) and reframed telemetry as observability-only. Added public refocus doc (`docs/protocol_refocus_vnext.md`) and updated README onboarding to center the layered model.
+
+## 2025-12-09
+- Added ZERO_SEED_BOOT as an official boot mode (default for empty workspaces) alongside SEED_BOOT; defined detection and INIT command handling in `protocol/BOOT.md` and `protocol/INIT_COMMAND_INTEGRATION_SPEC.md`.
+- Introduced `protocol/JANE_ZERO_SEED_ONBOARDING_SPEC.md` detailing Jane’s mandatory onboarding flow: workspace identity, first Responsibility container, registry entry, test RFA, filesystem verification, and progressive feature tour without Task Worker or seeds.
+- Updated steward persona, responsibility creation rules, RFA/tasks, telemetry, and workspace bootstrap docs to ensure `init` triggers Jane-led onboarding, logs boot and test RFA events, and never overwrites existing registries.
+- Documented `init` as the recommended entrypoint in README; zero-seed onboarding now produces one Responsibility container, manifest, context, registry entry, test RFA mirror, and boot log in all empty-workspace starts.
 
 ## 2025-12-03
 - Introduced native Task objects (Mandate → Task → Responsibility → Action) via `protocol/specs/v1/10_tasks.md`, Kernel task interfaces, and mandate materialization rules that map to Google Tasks/Calendar through `google_workspace_mcp`.

@@ -48,6 +48,11 @@ Every decision is recorded in memory (`boot_model_check`) and telemetry (`model_
 - **Registry as index** – `registry/responsibility_registry.json` (or SQL registry) indexes each Responsibility and points to its container; it is not the primary store of Responsibility state.
 - **Isolation rule** – No Responsibility may write into another container without explicit authorization. SYS_HEALTH_OPS retains read-only audit access.
 
+## Creation Paths
+- **Seed Boot** – Responsibilities may be created from seeds (predefined registry entries + containers). Existing behavior is preserved.
+- **Zero-Seed Onboarding** – In an empty workspace where the first command is `init`, Jane must guide the user to create the first Responsibility interactively (see `JANE_ZERO_SEED_ONBOARDING_SPEC.md`). The onboarding flow must scaffold the container, registry entry, and minimal context files without requiring a Task Worker or external integrations.
+- Both paths must respect encapsulation (portable containers) and must never overwrite existing responsibilities or registry entries.
+
 ## Transfer of Responsibility
 Responsibility can be delegated only when:
 - The receiving agent acknowledges the Mandate run or accepted RequestForAction reference and corresponding Guardrails clause.

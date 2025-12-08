@@ -64,6 +64,20 @@ responsibility-os-protocol/
 
 ---
 
+## Minimal Workspace Layout for Zero-Seed Boot
+For a brand-new installation with no seeds, the workspace should start with only:
+
+```
+registry/           # empty; Jane will add the first Responsibility container
+queue/inbox/        # markdown mirrors for RFAs
+telemetry/          # telemetry events and boot logs may be written here
+boot_trial_logs/    # boot notes; ZERO_SEED_BOOT writes an entry
+```
+
+When the user types `init` as the first command in this empty workspace, Jane guides them through naming the workspace, creating the first Responsibility (`registry/<id>/` with `context.md`, `manifest.json`, `logs/`, `tasks/inbound|outbound`, `notes.md`), adding a registry entry, emitting one test RFA to `queue/inbox/`, and logging the boot. ZERO_SEED_BOOT requires no Task Worker, seeds, or external integrations.
+
+---
+
 ## Steward Objects to Generate
 
 Under `protocol/examples/steward/` Codex must create:

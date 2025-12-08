@@ -11,9 +11,9 @@ Responsibility OS is meant to evolve into a portable Context OS that travels wit
 Future scope areas include trust tooling (cryptographic Guardrails attestations and reproducible planning traces), federated persona registries for multi-organization stewardship, structured UI translation layers that keep enforcement metadata intact, and reference deployments that demonstrate how Context OS patterns integrate with existing DevOps and compliance pipelines.
 
 ## Three-Layer Architecture (Refocus vNext)
-- **Layer 1 – Core Agentic Spec (Stable):** responsibilities, personas, steward, kernel, guardrails, authority/escalation, memory lifecycle, coordination primitives. No execution/telemetry/routing here.
-- **Layer 2 – Context & Memory Infrastructure:** golden identity enforcement, context packs, unified task brief synthesis, context budgeting/density warnings, retrieval/compression patterns.
-- **Layer 3 – Operational & DevOps Infrastructure:** telemetry and observability, task routing, filesystem standards, registry, data lineage, integrations, execution orchestration. Layer 3 cannot mutate cognition or authority; it observes and routes only.
+- **Layer 1 – Core Agentic Spec (Stable):** responsibilities, personas, steward, kernel, guardrails, authority/escalation, memory lifecycle, coordination primitives. This is the heart of agent-to-agent collaboration.
+- **Layer 2 – Context & Memory Infrastructure:** golden identity enforcement, context packs, unified task brief synthesis, context budgeting/density warnings, retrieval/compression patterns so agents can stay within context windows.
+- **Layer 3 – Operational & DevOps Infrastructure (Observability Only):** telemetry and logging, optional routing connectors, filesystem standards, registry, data lineage. Layer 3 may log, mirror, or route but must not alter cognition, authority, or memory ordering. Responsibilities create/execute their own Tasks; cross-responsibility asks flow through RFAs, with all system events logged centrally for audit.
 
 ## Repository Layout
 - `PROTOCOL_BOOTSTRAP_V1.md` – original bootstrap brief that defines the required structure and rules.
@@ -24,6 +24,7 @@ Future scope areas include trust tooling (cryptographic Guardrails attestations 
 - `protocol/progress/PROGRESS_LOG.md` – append-only changelog documenting version bumps or adjustments.
 - `protocol/README.md` – quick start guide for anyone authoring protocol materials.
 - Cross-cutting specs live beside the steward examples (`RESPONSIBILITY_FILESYSTEM_STANDARD_V0_1.md`, `RESPONSIBILITY_BOOT_TEMPLATE.md`, `RESPONSIBILITY_STARTUP_CHECKLIST.md`, `TASK_WORKER_BOOT_SPEC.md`, `AI_CONTEXT_BUNDLES.md`, `REQUEST_FOR_ACTION_SPEC.md`, `RESPONSIBILITY_REGISTRY_SPEC.md`, `INTENT_ROUTER_SPEC.md`, `EVENT_TRIGGER_SPEC.md`, `DATA_LINEAGE_SPEC.md`, `TELEMETRY_SPEC.md`, `telemetry/policies.default.yaml`) and define shared infrastructure contracts.
+- Boot modes are defined in `protocol/BOOT.md` with supporting specs `protocol/INIT_COMMAND_INTEGRATION_SPEC.md` and `protocol/JANE_ZERO_SEED_ONBOARDING_SPEC.md`: `init` is the recommended entrypoint; empty workspaces enter ZERO_SEED_BOOT (Jane-led onboarding) while seeded workspaces continue with SEED_BOOT.
 - `docs/agentic_os_tasks_protocol_update.md` documents the Task worker + Google Workspace sync rollout plan.
 - `docs/agentic_os_protocol_tdd.md` provides a narrative walkthrough of the entire Responsibility OS protocol for new contributors.
 - Runbooks live under `runbooks/`. Start with `runbooks/README.md` for the standard “create workspace → request boot → log signoff + onboarding guide” flow, then follow the specific runbook you need (e.g., `runbooks/dad_mode_boot_runbook.md`).
