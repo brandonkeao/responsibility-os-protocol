@@ -22,6 +22,7 @@ Entries are append-only and reverse-chronological.
 - Captured context hygiene patterns: volume thresholds (<2,500 green, >3,000 consolidate), operational workflow prominence (>10%), pre-change volume checks, telemetry `context_volume`, and steward audits of scaffolded folders and “when to use” triggers.
 - Added meta-agent (Agent Coach) duties to steward responsibility, cross-responsibility orchestration guidance, command entrypoint recommendation, session log template, and workspace topology diagram encouragement.
 - Integrated Context Packs placement and UTB synthesis rules; aligned density warnings, Golden Identity Prompt requirement/precedence, and guardrail enforcement (block boot if GIP missing; UTB must respect persona + guardrails; warnings logged at 2,000–3,500 tokens).
+- Added `CONTEXT_PACK_SPEC.md`, GIP guardrail warning for legacy mode, and validator stub `protocol/VALIDATOR_README.md` outlining compliance checks (GIP, packs, UTB, density, mem0, ordering, overrides, legacy).
 
 ## 2025-11-27
 - Introduced mandate terminology (superseding legacy charges) across specs and steward examples.

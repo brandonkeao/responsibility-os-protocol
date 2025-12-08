@@ -37,3 +37,4 @@ Guardrails must be versioned with semantic identifiers. Kernel loads only compat
 - GIP anchors style/intent; it must not override safety clauses. Precedence: Guardrails > GIP/persona > UTB > memory injections.
 - Context Packs feed a Unified Task Brief (UTB); Guardrails require that UTB generation succeeds and respects GIP. If UTB synthesis fails, block execution and log to memory/telemetry.
 - Guardrails log context density warnings when UTB + pack-derived content exceeds 2,000–3,500 tokens; warnings do not block by default but require operator acknowledgment for overrides.
+- Guardrails should warn when Responsibilities operate in legacy mode (no GIP or packs) and require upgrade before accepting non-legacy workloads.
