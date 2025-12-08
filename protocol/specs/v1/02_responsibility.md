@@ -11,7 +11,7 @@ Responsibility OS defines responsibility as the contract between human intent, t
 ### Responsibility Boot Lifecycle
 Responsibilities boot through four deterministic phases documented in `protocol/RESPONSIBILITY_BOOT_TEMPLATE.md` and consolidated operationally in `protocol/RESPONSIBILITY_STARTUP_CHECKLIST.md`:
 
-1. **Phase 0 – Static Files**: Kernel validates persona, guardrails, mandate definitions, and known tools.
+1. **Phase 0 – Static Files**: Kernel validates persona, guardrails, mandate definitions, known tools, and the per-Responsibility container (`registry/<responsibility_id>/` with `context.md`, `manifest.json`, `logs/`, `tasks/inbound`, `tasks/outbound`).
 2. **Phase 1 – Orientation Boot**: Steward produces a BOOT\_SUMMARY using the canonical schema so downstream agents inherit rules, tool safety notes, and context gaps.
 3. **Phase 2 – BOOT\_SUMMARY Persistence**: Summary becomes the primary runtime artifact; raw files serve as append-only provenance. Stewards must invoke `kernel.boot.regenerate(<responsibility_id>)` to update it; manual edits are prohibited.
 4. **Phase 3 – Task Execution Rehydration**: Responsibilities replay open Tasks (and their Mandate references) before issuing new actions so memory, Task status, and RequestForAction links remain aligned.
@@ -37,6 +37,11 @@ model:
 - Choosing `update_default_model` demands a PROGRESS\_LOG entry plus append-only memory pointer referencing the policy change.
 
 Every decision is recorded in memory (`boot_model_check`) and telemetry (`model_mismatch_on_boot`) so auditors can trace deviations.
+
+## Filesystem Encapsulation & Registry Index
+- **Dedicated container** – Every instantiated Responsibility owns a portable directory under the workspace registry (e.g., `registry/<responsibility_id>/`) holding, at minimum: `context.md`, `manifest.json`, `logs/`, `tasks/inbound/`, `tasks/outbound/`, and `notes.md`. This container is the System-of-Context for that Responsibility and is the unit of portability between workspaces.
+- **Registry as index** – `registry/responsibility_registry.json` (or SQL registry) indexes each Responsibility and points to its container; it is not the primary store of Responsibility state.
+- **Isolation rule** – No Responsibility may write into another container without explicit authorization. SYS_HEALTH_OPS retains read-only audit access.
 
 ## Transfer of Responsibility
 Responsibility can be delegated only when:

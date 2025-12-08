@@ -6,6 +6,7 @@ Tasks are now first-class, append-only records that sit between Mandates and Res
 - **Chain enforcement** – Tasks formalize the Mandate → Task → Responsibility → Action flow so every action cites both authority (mandate) and execution ownership (responsibility).
 - **Context portability** – Tasks are stored in the Responsibility filesystem and replicated to trusted providers (Google Tasks, Calendar) without forfeiting protocol guarantees.
 - **Tool interoperability** – Only the Task Worker may mutate Task state; LLMs and external automations must go through Kernel-issued commands.
+- **Placement** – Global task queues live under `tasks/queue`; per-Responsibility tasks live inside the portable container at `registry/<responsibility_id>/tasks/inbound` (inputs) and `tasks/outbound` (outputs/responses). Task Worker must respect both locations and avoid cross-writing between Responsibilities.
 
 ## Canonical Schema
 

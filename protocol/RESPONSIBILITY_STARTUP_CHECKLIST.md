@@ -13,14 +13,15 @@ This checklist collapses the Responsibility boot + Task hydration requirements i
 6. `queue/inbox/*.md` (if accepting RFAs) – regenerated views referencing the SQL queue (`protocol/REQUEST_FOR_ACTION_SPEC.md`).
 7. `BOOT_SUMMARY.latest.json` – generated via `kernel.boot.regenerate` (see below).
 8. `ai_context/model_preferences.md` or equivalent YAML snippet describing `model.default_model` and `allowed_models`.
+9. **Portable container** under `registry/<responsibility_id>/` with `context.md`, `manifest.json`, `logs/`, `tasks/inbound/`, `tasks/outbound/`, `notes.md` (workspace index points here).
 
 ## Required Phases
 | Phase | Description | Pass Criteria |
 | --- | --- | --- |
-| Phase 0 – Static Validation | Kernel verifies required files exist and hash signatures match Guardrails records. | All files present + signed; missing files block boot. |
+| Phase 0 – Static Validation | Kernel verifies required files and the portable container (`registry/<responsibility_id>/` with context, manifest, logs, tasks inbound/outbound) exist; hash signatures match Guardrails records. | All files present + signed; missing files block boot. |
 | Phase 1 – Orientation Boot | Steward persona reviews mandates, tools, and guardrails; Kernel records acknowledgment. | `memory/events.md` contains `boot_orientation` entry referencing persona + guardrail clauses. |
 | Phase 2 – BOOT_SUMMARY Persistence | Run `kernel.boot.regenerate` to produce BOOT_SUMMARY from canonical files (schema in `protocol/RESPONSIBILITY_BOOT_TEMPLATE.md`). | `BOOT_SUMMARY.latest.json` updated with new timestamp; memory records delta hash. |
-| Phase 3 – Task Rehydration | Task Worker replays open Tasks from `tasks/` and validates external bindings (Google Tasks/Calendar). | `tasks/index.json` status matches external sync; telemetry heartbeat reported. |
+| Phase 3 – Task Rehydration | Task Worker replays open Tasks from `tasks/` and validates external bindings (Google Tasks/Calendar) and local inbox/outbox (`registry/<id>/tasks/inbound|outbound`). | `tasks/index.json` status matches external sync; telemetry heartbeat reported. |
 
 ## Required Outputs
 1. **BOOT_SUMMARY.latest.json** – authoritative runtime snapshot (no manual edits).

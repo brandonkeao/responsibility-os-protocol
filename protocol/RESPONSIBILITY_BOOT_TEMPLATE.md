@@ -11,6 +11,8 @@ Phase 1: Orientation boot\
 Phase 2: BOOT_SUMMARY persistence\
 Phase 3: Task execution rehydration
 
+Phase 0 must also confirm the per-Responsibility container exists under `registry/<responsibility_id>/` with `context.md`, `manifest.json`, `logs/`, and `tasks/inbound|outbound` folders; boot fails if the container is missing.
+
 ## Canonical BOOT_SUMMARY Schema
 
 ``` json

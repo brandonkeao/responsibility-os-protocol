@@ -1,6 +1,11 @@
 # Responsibility Registry Specification
 
-The registry is the canonical source of truth for which Responsibilities exist inside an installation, their lifecycle state, capability manifest, and routing metadata. It lives in the System-of-Record (SQL) but surfaces human-readable mirrors in `responsibility.md` files per RFS v0.1.
+The registry is the canonical source of truth for which Responsibilities exist inside an installation, their lifecycle state, capability manifest, and routing metadata. It lives in the System-of-Record (SQL) but surfaces human-readable mirrors in `registry/responsibility_registry.json` and per-Responsibility portable containers under `registry/<responsibility_id>/` (see RFS v0.1).
+
+## Registry as Index (not primary store)
+- `registry/responsibility_registry.json` (and the SQL table) index Responsibilities and point to their portable containers.
+- Containers are the System-of-Context for a Responsibility: `context.md`, `manifest.json`, `logs/`, `tasks/inbound`, `tasks/outbound`, `notes.md`.
+- No Responsibility may write into another container without explicit authorization; SYS_HEALTH_OPS retains read-only visibility for audits.
 
 ## SQL Schema
 
@@ -23,10 +28,10 @@ Optional `workspaces` table may document workspace metadata (`id`, `name`, `chie
 
 ## Capability Manifest
 
-Every Responsibility publishes a machine-readable manifest alongside `persona.md` in the filesystem:
+Every Responsibility publishes a machine-readable manifest inside its portable container:
 
 ```
-<responsibility>/capabilities.json
+registry/<responsibility>/manifest.json
 ```
 
 Example schema:
@@ -71,7 +76,7 @@ registry_row: responsibilities/churn_analysis
 workspace_id: rebrandly_bi
 status: active
 chief_of_staff_id: product_cos
-capability_manifest: capabilities.json
+capability_manifest: registry/churn_analysis/manifest.json
 ---
 ```
 

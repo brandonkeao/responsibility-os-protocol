@@ -60,6 +60,7 @@ CREATE TABLE telemetry_alerts (
 - `context_ingested`: emitted when Jane accepts a bundle (via `ingest_new_context` or workspace drop). Payload MUST include `bundle_ids`, `rfa_ids`, `responsibility_ids_notified` (if known), `workspace_id`, and timestamp.
 - `context_dispatched`: emitted when Jane sends `new_context_available` RFAs. Same payload requirements as above plus the list of RFAs created.
 - `model_mismatch_on_boot`: emitted during Phase 0/1 of the startup checklist whenever `actual_model` differs from `default_model`. Payload MUST include `responsibility_id`, `default_model`, `actual_model`, `operator_decision` (`proceed`, `abort`, `update_default_model`), and the memory pointer documenting the decision.
+- `responsibility_migration`: emitted when exporting/importing a Responsibility container. Payload SHOULD include `responsibility_id`, `workspace_id`, `action` (`export|import|backfill`), `manifest_hash`, `context_hash`, `boot_summary_hash`, and pointers to `telemetry/incidents/migration_<timestamp>.md`.
 
 ## Kernel & Worker Responsibilities
 

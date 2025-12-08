@@ -2,6 +2,13 @@
 
 Entries are append-only and reverse-chronological.
 
+## 2025-12-08
+- Enforced Responsibility encapsulation as a protocol invariant: every instantiated Responsibility must reside in a dedicated portable container (`registry/<id>/` with context, manifest, logs, tasks inbox/outbox, notes) and registry files act as indexes, not primary state.
+- Added deterministic first-boot contract updates across specs/checklists/boot template to require scaffolding the containers; disallowed cross-responsibility writes.
+- Authored `protocol/RESPONSIBILITY_PORTABILITY.md` describing export/import and migration rules plus telemetry incident logging for moves.
+- Updated task placement rules (per-responsibility inbox/outbox vs global queues) and Task Worker obligations; added telemetry migration event guidance.
+- Refreshed registry spec, filesystem standard, and startup checklist to reflect the new container layout and registry index role.
+
 ## 2025-12-03
 - Introduced native Task objects (Mandate → Task → Responsibility → Action) via `protocol/specs/v1/10_tasks.md`, Kernel task interfaces, and mandate materialization rules that map to Google Tasks/Calendar through `google_workspace_mcp`.
 - Added Task Worker invariants plus memory/task references across specs to enforce append-only ownership and sync safety.

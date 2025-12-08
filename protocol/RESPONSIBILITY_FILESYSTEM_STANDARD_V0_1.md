@@ -8,10 +8,30 @@ RFS defines how each Responsibility organizes markdown, JSON, and log artifacts 
 - **Explicit Authorship** – Every file includes provenance frontmatter identifying the actor, capability, and source event.
 - **AI-Friendly Bundles** – Critical summaries live inside `ai_context/` so LLM calls can stay small and deliberate.
 
+## Portable Responsibility Container (Mandatory)
+
+Every instantiated Responsibility owns a portable container under the workspace registry:
+
+```
+registry/
+  <responsibility_id>/
+    context.md
+    manifest.json
+    logs/
+    tasks/
+      inbound/
+      outbound/
+    notes.md
+```
+
+- This container is the authoritative System-of-Context for that Responsibility and is the unit that may be exported/imported across workspaces.
+- `registry/responsibility_registry.json` (or SQL registry) indexes these containers; it is not the primary storage of Responsibility state.
+- Responsibilities must not write inside another Responsibility’s container; SYS_HEALTH_OPS retains read-only access for audits.
+
 ## Canonical Layout
 
 ```
-<workspace>/<responsibility_id>/
+<workspace>/<responsibility_id>/    # or registry/<responsibility_id>/ if using the portable container root
   kernel.md
   guardrails.md
   persona.md

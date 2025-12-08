@@ -16,6 +16,7 @@ tracking.
 -   Routing to Responsibilities
 -   Sync with Google Tasks and Calendar
 -   Status tracking
+-   Honor placement rules: global tasks under `tasks/queue`; per-Responsibility tasks under `registry/<responsibility_id>/tasks/inbound` and `tasks/outbound` with no cross-container writes.
 
 ## Safety
 

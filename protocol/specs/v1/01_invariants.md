@@ -13,5 +13,7 @@ The Kernel enforces deterministic loops that steward agents must follow, and the
 9. **BOOT\_SUMMARY Control** – BOOT\_SUMMARY files may only be generated via `kernel.boot.regenerate`. Guardrails block execution when on-disk content diverges from the last signed hash.
 10. **Workspace Isolation** – Every RFA carries `workspace_id`, and kernels/guardrails enforce that stewards, origins, and targets belong to the same workspace unless a federated path is explicitly approved.
 11. **Model Declaration** – Responsibilities publish `model.default_model` plus allowed fallbacks; startup halts (or records operator override) if the runtime model is outside the allowed set.
+12. **Responsibility Encapsulation** – Every instantiated Responsibility owns a dedicated filesystem directory (portable container) holding its context, manifest, logs, and task inbox/outbox; no Responsibility may write into another container without explicit authorization.
+13. **Deterministic First Boot** – Startup is successful only when the steward scaffolds registry/index entries plus per-Responsibility containers (`context.md`, `manifest.json`, `logs/`, `tasks/inbound`, `tasks/outbound`). Registry files act as indexes to these containers, not as the primary store of Responsibility state.
 
 Breaking an invariant requires a protocol version bump recorded in `progress/PROGRESS_LOG.md` so stewards can coordinate upgrades.
