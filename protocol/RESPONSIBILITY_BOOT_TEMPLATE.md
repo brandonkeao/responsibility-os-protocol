@@ -1,3 +1,8 @@
+---
+layer: ops_infrastructure
+change_risk: medium
+---
+
 # Agentic OS Responsibility Boot Template
 
 ## Purpose

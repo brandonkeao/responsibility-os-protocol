@@ -1,3 +1,8 @@
+---
+layer: core
+change_risk: high
+---
+
 # System Invariants
 
 The Kernel enforces deterministic loops that steward agents must follow, and the Guardrails interlock with each step to block unsafe transitions. The following invariants hold for any Responsibility OS deployment:

@@ -1,3 +1,8 @@
+---
+layer: core
+change_risk: high
+---
+
 # Responsibility OS Protocol – Overview
 
 The Responsibility OS Protocol v1 defines how autonomous or co-pilot style systems coordinate work while staying aligned with human intent. It is organized around three anchors: the Kernel (decision engine), the Guardrails (safety and compliance envelope), and the Steward (accountable operator persona). Every component downstream references the Kernel and Guardrails so that autonomy never detaches from system constraints.

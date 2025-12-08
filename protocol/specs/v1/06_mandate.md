@@ -1,3 +1,8 @@
+---
+layer: core
+change_risk: high
+---
+
 # Mandate Specification
 
 Mandates (formerly called charges) are the internal authority packets a Responsibility uses to authorize work. They stay entirely inside a Responsibility, run under its Kernel + Guardrails pairing, and never grant direct control to other Responsibilities.

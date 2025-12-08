@@ -1,3 +1,8 @@
+---
+layer: ops_infrastructure
+change_risk: medium
+---
+
 # Responsibility Registry Specification
 
 The registry is the canonical source of truth for which Responsibilities exist inside an installation, their lifecycle state, capability manifest, and routing metadata. It lives in the System-of-Record (SQL) but surfaces human-readable mirrors in `registry/responsibility_registry.json` and per-Responsibility portable containers under `registry/<responsibility_id>/` (see RFS v0.1).

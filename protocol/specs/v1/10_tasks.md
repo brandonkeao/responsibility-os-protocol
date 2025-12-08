@@ -1,3 +1,8 @@
+---
+layer: ops_infrastructure
+change_risk: medium
+---
+
 # Task Specification
 
 Tasks are now first-class, append-only records that sit between Mandates and Responsibilities. They capture the exact unit of work the Kernel expects a Responsibility to execute and provide the bridge into external productivity suites (e.g., Google Workspace) via `google_workspace_mcp`.

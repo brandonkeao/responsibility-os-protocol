@@ -1,3 +1,8 @@
+---
+layer: ops_infrastructure
+change_risk: medium
+---
+
 # Responsibility Portability Standard
 
 ## Purpose

@@ -1,3 +1,8 @@
+---
+layer: core
+change_risk: high
+---
+
 # Memory Specification (Append-Only)
 
 Memory is a tamper-evident, append-only ledger that stores every Kernel decision, Guardrails evaluation, and steward reflection.

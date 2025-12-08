@@ -1,3 +1,8 @@
+---
+layer: ops_infrastructure
+change_risk: medium
+---
+
 # Responsibility Filesystem Standard v0.1 (RFS)
 
 RFS defines how each Responsibility organizes markdown, JSON, and log artifacts so that humans, AI assistants, and deterministic services share the same context. It complements the SQL System-of-Record by treating the filesystem as the **System-of-Context**.

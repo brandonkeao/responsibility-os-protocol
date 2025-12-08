@@ -1,3 +1,8 @@
+---
+layer: ops_infrastructure
+change_risk: medium
+---
+
 # Telemetry Specification
 
 Telemetry ensures every Responsibility OS deployment exposes health, cost, and drift signals through the same deterministic channels that govern mandates, requests, and events. This spec mirrors other System-of-Record schemas so kernels, guardrails, and stewards can observe the system without bespoke logging.
@@ -7,6 +12,7 @@ Telemetry ensures every Responsibility OS deployment exposes health, cost, and d
 1. Provide a canonical schema for heartbeat, latency, cost, and drift measurements.
 2. Keep telemetry append-only and auditable, with Guardrails clauses referencing each record.
 3. Enable deterministic alerting and memory reflections when thresholds are breached.
+4. Telemetry is observability-only (Layer 3): it may not mutate agent cognition, authority, or policy; it reports state for humans/guardrails to evaluate.
 
 ## System-of-Record Schema
 

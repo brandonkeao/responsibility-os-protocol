@@ -1,3 +1,8 @@
+---
+layer: context_infrastructure
+change_risk: medium
+---
+
 # UI Translation Specification
 
 Responsibility OS may surface interfaces for humans, but UI layers must remain faithful to Kernel decisions and Guardrails outcomes.

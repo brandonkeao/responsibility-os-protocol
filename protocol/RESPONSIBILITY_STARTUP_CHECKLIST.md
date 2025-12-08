@@ -1,3 +1,8 @@
+---
+layer: ops_infrastructure
+change_risk: medium
+---
+
 # Responsibility Startup Checklist
 
 This checklist collapses the Responsibility boot + Task hydration requirements into a single operational artifact. Responsibilities must satisfy every item before accepting real work. Reference specs are linked for deeper context, but operators should be able to run this checklist alone.

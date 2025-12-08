@@ -1,3 +1,8 @@
+---
+layer: core
+change_risk: high
+---
+
 # Responsibility Model
 
 Responsibility OS defines responsibility as the contract between human intent, the Kernel execution path, and the Guardrails that bound behavior. Starting with the Task update, every mandate now materializes into one or more **Tasks** before a Responsibility claims the work, producing the deterministic chain **Mandate → Task → Responsibility → Action**.

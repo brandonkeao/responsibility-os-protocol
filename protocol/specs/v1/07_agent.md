@@ -1,3 +1,8 @@
+---
+layer: core
+change_risk: high
+---
+
 # Agent Specification
 
 Agents are operational workers (human or synthetic) that execute Kernel-planned steps subject to Guardrails enforcement.

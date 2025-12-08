@@ -1,3 +1,8 @@
+---
+layer: core
+change_risk: high
+---
+
 # Persona Specification
 
 Personas describe how stewards or agents express behavior while staying inside Kernel and Guardrails boundaries.

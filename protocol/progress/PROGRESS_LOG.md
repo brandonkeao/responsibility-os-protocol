@@ -8,6 +8,7 @@ Entries are append-only and reverse-chronological.
 - Authored `protocol/RESPONSIBILITY_PORTABILITY.md` describing export/import and migration rules plus telemetry incident logging for moves.
 - Updated task placement rules (per-responsibility inbox/outbox vs global queues) and Task Worker obligations; added telemetry migration event guidance.
 - Refreshed registry spec, filesystem standard, and startup checklist to reflect the new container layout and registry index role.
+- Introduced three-layer governance (core agentic, context/memory infrastructure, ops infrastructure) with mandatory spec frontmatter (`layer`, `change_risk`) and reframed telemetry as observability-only. Added public refocus doc (`docs/protocol_refocus_vnext.md`) and updated README onboarding to center the layered model.
 
 ## 2025-12-03
 - Introduced native Task objects (Mandate → Task → Responsibility → Action) via `protocol/specs/v1/10_tasks.md`, Kernel task interfaces, and mandate materialization rules that map to Google Tasks/Calendar through `google_workspace_mcp`.

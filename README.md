@@ -3,12 +3,17 @@
 This repository carries the open-source specification set for Responsibility OS protocol v1 plus a long-lived roadmap for responsible autonomy. It currently ships the core specs and steward examples needed to bring a transparent Kernel + Guardrails system online.
 
 ## Current Protocol Snapshot
-Responsibility OS v1 codifies Kernel, Guardrails, personas, charges, agents, and append-only memory primitives so teams can stand up an auditable co-pilot. The numbered files in `protocol/specs/v1/` act as a linear playbook: read the overview, lock in invariants, and then extend personas or charges with the steward examples under `protocol/examples/steward/`. `PROTOCOL_BOOTSTRAP_V1.md` documents the original bootstrap contract and `protocol/progress/PROGRESS_LOG.md` tracks every spec adjustment.
+Responsibility OS v1 codifies Kernel, Guardrails, personas, charges, agents, and append-only memory primitives so teams can stand up an auditable co-pilot. The numbered files in `protocol/specs/v1/` act as a linear playbook: read the overview, lock in invariants, and then extend personas or charges with the steward examples under `protocol/examples/steward/`. `PROTOCOL_BOOTSTRAP_V1.md` documents the original bootstrap contract and `protocol/progress/PROGRESS_LOG.md` tracks every spec adjustment. Each spec now declares its architectural layer + change risk to keep governance clear.
 
 ## Long-Term Vision
 Responsibility OS is meant to evolve into a portable Context OS that travels with stewards, adapts to new model backends, and scales from solo operators to organizations. The design principles derive from safety engineering (Kernel/Guardrails interlocks), knowledge management (append-only memory and traceable personas), and organizational science (clear charge delegation and stewardship). Engineering priorities focus on deterministic planning interfaces, policy-aware tooling that keeps safety clauses inline, and lineage-preserving storage so auditors can cross disciplines—from compliance to product operations—without losing context.
 
 Future scope areas include trust tooling (cryptographic Guardrails attestations and reproducible planning traces), federated persona registries for multi-organization stewardship, structured UI translation layers that keep enforcement metadata intact, and reference deployments that demonstrate how Context OS patterns integrate with existing DevOps and compliance pipelines.
+
+## Three-Layer Architecture (Refocus vNext)
+- **Layer 1 – Core Agentic Spec (Stable):** responsibilities, personas, steward, kernel, guardrails, authority/escalation, memory lifecycle, coordination primitives. No execution/telemetry/routing here.
+- **Layer 2 – Context & Memory Infrastructure:** golden identity enforcement, context packs, unified task brief synthesis, context budgeting/density warnings, retrieval/compression patterns.
+- **Layer 3 – Operational & DevOps Infrastructure:** telemetry and observability, task routing, filesystem standards, registry, data lineage, integrations, execution orchestration. Layer 3 cannot mutate cognition or authority; it observes and routes only.
 
 ## Repository Layout
 - `PROTOCOL_BOOTSTRAP_V1.md` – original bootstrap brief that defines the required structure and rules.

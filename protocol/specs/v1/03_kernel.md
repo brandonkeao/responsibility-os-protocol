@@ -1,3 +1,8 @@
+---
+layer: core
+change_risk: high
+---
+
 # Kernel Specification
 
 The Kernel is the deterministic core that interprets Mandates, sequences agents, and writes append-only records. It operates only when paired with the Guardrails module, which must approve every state transition and every RequestForAction handoff accepted into the queue.

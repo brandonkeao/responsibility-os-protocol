@@ -1,3 +1,8 @@
+---
+layer: core
+change_risk: high
+---
+
 # Guardrails Specification
 
 Guardrails define the operative safety, compliance, and ethics boundaries that every Kernel module references before acting. They act as an always-on co-processor that can veto Kernel decisions.
