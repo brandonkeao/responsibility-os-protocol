@@ -17,6 +17,7 @@ Agents are operational workers (human or synthetic) that execute Kernel-planned 
 2. Agent acknowledges the step, writing the acknowledgement to append-only memory.
 3. Agent executes action, cites the Guardrails clause satisfied, and emits observations.
 4. Kernel validates output; Guardrails re-check context to ensure no drift from policy.
+5. Agents surface any cross-responsibility need as a RequestForAction; the receiving Responsibility decides whether to spawn Tasks inside its own container and records acknowledgements in memory plus the centralized event log.
 
 ## Accountability
 - Every agent run references the supervising persona plus either the active mandate run ID or the RequestForAction ID being serviced.

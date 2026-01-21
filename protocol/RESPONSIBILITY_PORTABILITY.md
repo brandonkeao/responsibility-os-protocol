@@ -54,5 +54,6 @@ For each row in `registry/responsibility_registry.json` or the SQL registry:
 - Per-Responsibility tasks MUST use `registry/<responsibility_id>/tasks/inbound` (inputs) and `tasks/outbound` (outputs).
 
 ## Deterministic Boot Contract (Recap)
-- Boot is successful only when: registry/index exists, containers exist for all seeded Responsibilities, and required files are present inside each container.
-- Boot failure if any container or required file is missing.
+- Seedless first boot is allowed: registry/index exists but may be empty until Jane creates the first Responsibility container during onboarding.
+- Once a Responsibility exists, boot is successful only when its container exists and required files are present inside it; subsequent boots must ensure every registered Responsibility has a valid container.
+- Boot failure if any required container or required file is missing for a registered Responsibility.
