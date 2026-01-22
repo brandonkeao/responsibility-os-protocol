@@ -1,8 +1,8 @@
 # Entity Specification Protocol
 
-**Version**: 2.1
+**Version**: 2.2
 **Created**: January 2026
-**Updated**: January 20, 2026
+**Updated**: January 21, 2026
 **Purpose**: Canonical specification for Jane-like entities
 
 ---
@@ -755,6 +755,136 @@ Token target: ~13k tokens (~6.5% of 200k)
 5. Surface relevant learnings
 6. Check inbox
 7. Full boot report with context summary
+
+---
+
+## Onboarding (Tier 2 Orchestrators)
+
+First-boot detection and onboarding is an optional pattern for orchestrator entities that serve as primary user interfaces.
+
+### When to Implement
+
+- Entity is a Tier 2 orchestrator
+- Entity may have first-time users
+- Progressive introduction is valuable
+
+### First-Boot Detection
+
+Use a state file to track onboarding progress:
+
+**Location**: `memory/system_health/onboarding.md`
+
+**Detection logic**:
+| File State | Boot Behavior |
+|------------|---------------|
+| Missing | First-time user - trigger onboarding |
+| Status: In Progress | Mid-onboarding - offer to continue |
+| Status: Complete | Experienced user - normal boot |
+
+### Onboarding State File Format
+
+```markdown
+# Onboarding State
+
+**Created**: [DATE]
+**Last Updated**: [DATE]
+**Status**: [In Progress | Complete]
+
+---
+
+## Onboarding Status
+
+| Step | Status | Completed |
+|------|--------|-----------|
+| First boot greeting | [Pending/Complete] | [DATE/-] |
+| Identity confirmation | [Pending/Complete] | [DATE/-] |
+| Session continuity demo | [Pending/Complete] | [DATE/-] |
+| Skill usage | [Pending/Complete] | [DATE/-] |
+| Advanced features | [Pending/Complete] | [DATE/-] |
+
+**Overall**: [In Progress | Complete]
+```
+
+### Onboarding Flow
+
+**Progressive disclosure** - Don't overwhelm new users:
+
+1. **Greeting** (~30 seconds)
+   - Warm welcome
+   - One-sentence role summary
+   - "Let's get you set up"
+
+2. **Identity Confirmation** (~1 minute)
+   - Verify context loading works
+   - Show entity name, role, personality
+   - "Everything looks good"
+
+3. **Session Continuity Demo** (~2 minutes)
+   - The "aha moment"
+   - Ask user to share something to remember
+   - Save it, explain they'll see it next session
+
+4. **Skill Introduction** (~2 minutes)
+   - Show 3-4 key skills
+   - Encourage trying one
+
+5. **Advanced Features** (brief)
+   - Mention conditional context
+   - Mention other entities (if applicable)
+   - "You're all set"
+
+### Escape Hatches
+
+- Users can skip onboarding at any time
+- `/onboard --skip` marks complete without steps
+- `/onboard --reset` restarts from beginning
+- Normal questions work during onboarding
+
+### Integration with Session-Start
+
+The `/session-start` skill should check onboarding state:
+
+```
+1. Read memory/system_health/onboarding.md
+2. If missing → trigger /onboard
+3. If "In Progress" → offer to continue or skip
+4. If "Complete" → normal boot
+```
+
+---
+
+## Fresh Start Testing (Recommended)
+
+Entities should be testable from a fresh state. Include validation in protocol reviews.
+
+### Automated Validation
+
+Use `protocol/docs/testing/fresh_start_validator.sh`:
+
+```bash
+./fresh_start_validator.sh /path/to/entity --tier2
+```
+
+Validates:
+- Required file structure
+- CLAUDE.md content
+- Kernel file presence
+- Skill existence
+- Inbox structure
+
+### Manual Testing Scenarios
+
+1. **New entity from template** - Copy template, replace placeholders, validate
+2. **First-boot flow** - Remove onboarding.md, test onboarding triggers
+3. **Session continuity** - Export session, start new session, verify context
+
+### Integration with Protocol Reviews
+
+During protocol reviews, include:
+- [ ] Run validator on templates
+- [ ] Run validator on existing entities
+- [ ] Test first-boot flow if onboarding implemented
+- [ ] Document any failures
 
 ---
 
@@ -1516,6 +1646,7 @@ See `birth_protocol/agent_birth_protocol.md` for:
 | 1.8 | January 12, 2026 | Added Memory Maintenance section: weekly reviews (RECOMMENDED), index maintenance guidance, deprecation protocol, portability validation guidance |
 | 2.0 | January 20, 2026 | Added Plan Persistence section: persistent plans for multi-session work, plan lifecycle with human-in-loop, registry pattern, /persist-plan skill specification |
 | 2.1 | January 20, 2026 | Added Context Maps pattern (optional), Skill Classification (core/domain/custom), enhanced documentation for emerging patterns |
+| 2.2 | January 21, 2026 | Added Onboarding section (first-boot detection, progressive disclosure flow, state tracking), Fresh Start Testing section (automated validation, testing scenarios) |
 
 ---
 
